@@ -1,7 +1,6 @@
 'use client'
 
 import { FormEvent, ChangeEvent, useState } from "react";
-import { promises as fsPromises } from 'fs';
 
 interface FormData {
     username: string
@@ -39,7 +38,6 @@ export default function ProfileForm(){
         const file = e.target.files[0]
         setImageFile(file)
     }
-    console.log(imageFile)
 
     return (
         <div className="w-1/2 h-1/2 mx-auto bg-slate-100">
