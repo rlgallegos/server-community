@@ -1,6 +1,6 @@
 'use client'
 
-import { FormEvent, useState } from "react";
+import { FormEvent, ChangeEvent, useState } from "react";
 
 interface FormData {
     username: string
@@ -12,16 +12,26 @@ export default function ProfileForm(){
         username: '',
         image: ''
     })
+    const [imageFile, setImageFile] = useState<File | null>(null)
+
+
     function handleEditDetails(e: FormEvent){
         e.preventDefault()
+        
     }
-    function handleChange(e: FormEvent){
-        console.log(e)
+
+    
+    function handleChange(e: ChangeEvent<HTMLInputElement>){
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         })
     }
+    function handleChangeFile(e){
+        const file = e.target.files[0]
+        setImageFile(file)
+    }
+    console.log(imageFile)
 
     return (
         <div className="w-1/2 h-1/2 mx-auto bg-slate-100">
@@ -29,6 +39,7 @@ export default function ProfileForm(){
             <div>
                 <form onSubmit={handleEditDetails}>
                     <input type="text" name="username" value={formData.username} onChange={handleChange}  />
+                    <input type="file" accept=".jpg, .jpeg, .png" onChange={handleChangeFile} />
                     <button type="submit">Submit Changes</button>
                 </form>
             </div>
