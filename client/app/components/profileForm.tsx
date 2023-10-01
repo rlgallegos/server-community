@@ -1,6 +1,7 @@
 'use client'
 
 import { FormEvent, ChangeEvent, useState } from "react";
+import { promises as fsPromises } from 'fs';
 
 interface FormData {
     username: string
@@ -17,8 +18,13 @@ export default function ProfileForm(){
 
     function handleEditDetails(e: FormEvent){
         e.preventDefault()
+        // handle image upload
         if (imageFile){
-            
+            try {
+                console.log(imageFile)
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 
