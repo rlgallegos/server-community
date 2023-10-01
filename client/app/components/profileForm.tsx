@@ -34,10 +34,13 @@ export default function ProfileForm(){
             [e.target.name]: e.target.value
         })
     }
-    function handleChangeFile(e){
-        const file = e.target.files[0]
-        setImageFile(file)
+    function handleChangeFile(e: ChangeEvent<HTMLInputElement>){
+        const files = e.target.files
+        if (files){
+            setImageFile(files[0])
+        }
     }
+    console.log(imageFile)
 
     return (
         <div className="w-1/2 h-1/2 mx-auto bg-slate-100">
