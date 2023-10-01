@@ -17,7 +17,9 @@ export default function ProfileForm(){
 
     function handleEditDetails(e: FormEvent){
         e.preventDefault()
-        
+        if (imageFile){
+            
+        }
     }
 
     
