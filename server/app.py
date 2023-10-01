@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Api, Resource
 
-from config.py import app
+from config import app
 
 api = Api(app)
 

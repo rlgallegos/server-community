@@ -2,12 +2,15 @@
 
 import { FormEvent, ChangeEvent, useState } from "react";
 
+const API_URL = process.env.NEXT_PUBLIC_REACT_APP_API
+
 interface FormData {
     username: string
     image: string
 }
 
 export default function ProfileForm(){
+    console.log(API_URL)
     const [formData, setFormData] = useState<FormData>({
         username: '',
         image: ''
@@ -21,6 +24,16 @@ export default function ProfileForm(){
         if (imageFile){
             try {
                 console.log(imageFile)
+                console.log(API_URL)
+                fetch(`${API_URL}/user`, {
+                    method: "POST",
+                    headers:  {
+                        'Content-Type': 'application/json'
+                    },
+                    body: imageFile
+                })
+
+
             } catch (error) {
                 console.log(error)
             }
@@ -40,7 +53,7 @@ export default function ProfileForm(){
             setImageFile(files[0])
         }
     }
-    console.log(imageFile)
+    // console.log(imageFile)
 
     return (
         <div className="w-1/2 h-1/2 mx-auto bg-slate-100">
