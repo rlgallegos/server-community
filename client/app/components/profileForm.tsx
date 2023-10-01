@@ -10,7 +10,6 @@ interface FormData {
 }
 
 export default function ProfileForm(){
-    console.log(API_URL)
     const [formData, setFormData] = useState<FormData>({
         username: '',
         image: ''
@@ -21,23 +20,22 @@ export default function ProfileForm(){
     function handleEditDetails(e: FormEvent){
         e.preventDefault()
         // handle image upload
-        if (imageFile){
-            try {
-                console.log(imageFile)
-                console.log(API_URL)
-                fetch(`${API_URL}/user`, {
-                    method: "POST",
-                    headers:  {
-                        'Content-Type': 'application/json'
-                    },
-                    body: imageFile
-                })
+        try {
+            const request = new FormData()
+            request.append('file', imageFile as Blob, 'image.jpg')
+            request.append('username', formData.username)
+            console.log(request)
+
+            fetch(`${API_URL}/user`, {
+                method: "POST",
+                body: request
+            })
 
 
-            } catch (error) {
-                console.log(error)
-            }
+        } catch (error) {
+            console.log(error)
         }
+    
     }
 
     
@@ -56,12 +54,12 @@ export default function ProfileForm(){
     // console.log(imageFile)
 
     return (
-        <div className="w-1/2 h-1/2 mx-auto bg-slate-100">
+        <div className="w-1/2 h-full mx-auto bg-slate-100">
             <h3>Edit Details</h3>
             <div>
                 <form onSubmit={handleEditDetails}>
                     <input type="text" name="username" value={formData.username} onChange={handleChange}  />
-                    <input type="file" accept=".jpg, .jpeg, .png" onChange={handleChangeFile} />
+                    <input type="file" name="image" accept=".jpg, .jpeg, .png" onChange={handleChangeFile} />
                     <button type="submit">Submit Changes</button>
                 </form>
             </div>
