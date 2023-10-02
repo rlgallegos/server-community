@@ -1,6 +1,6 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.ext.associationproxy import association_proxy
+# from sqlalchemy.ext.associationproxy import association_proxy
 from config import bcrypt, db, app
 
 class User(db.Model, SerializerMixin):
@@ -10,9 +10,10 @@ class User(db.Model, SerializerMixin):
     username = db.Column(db.String)
     _password_hash = db.Column(db.String)
     role = db.Column(db.String)
-    restaurant = db.relationship('Restaurant', back_populates='user', cascade="all, delete-orphan")
+    image = db.Column(db.String)
+    restaurant = db.relationship('Restaurant', back_populates='users', cascade="all, delete-orphan")
 
-    serialize_rules = ('-_password_hash', '-restaurant.user', '')
+    serialize_rules = ('-_password_hash', '-restaurant.users')
 
     @hybrid_property
     def password_hash(self):
@@ -27,9 +28,12 @@ class User(db.Model, SerializerMixin):
         return bcrypt.check_password_hash(self._password_hash, password.encode('utf-8'))
 
 class Restaurant(db.Model, SerializerMixin):
-    __tablename__ = 'restaurant'
+    __tablename__ = 'restaurants'
     
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
-    db.relationship('User', back_populates='restaurant', cascade='all, delete-orphan')
+
+    users = db.relationship('User', back_populates='restaurant', cascade='all, delete-orphan')
+
+    serialize_rules = ('-users.restaurant',)
