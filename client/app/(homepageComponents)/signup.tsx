@@ -1,5 +1,4 @@
-import { useState, FormEvent, ChangeEvent, ChangeEventHandler } from "react"
-import { PassThrough } from "stream"
+import { useState, FormEvent, ChangeEvent } from "react"
 
 
 const API_URL = process.env.NEXT_PUBLIC_REACT_APP_API
@@ -9,8 +8,11 @@ interface FormData {
     role: string
     password: string
 }
-
-export default function Signup(){
+interface Props {
+    setIsLoggedIn: React.Dispatch<React.SetStateAction<Boolean>>;
+}
+  
+export default function Signup({ setIsLoggedIn }: Props){
     const [imageFile, setImageFile] = useState<File | null>(null)
     const [formData, setFormData] = useState<FormData>({
         username: '',
@@ -31,6 +33,15 @@ export default function Signup(){
             fetch(`${API_URL}/users`, {
                 method: "POST",
                 body: request
+            }).then(res => {
+                if (res.ok){
+                    res.json().then(data => {
+                        setIsLoggedIn(true)
+                        console.log(data)
+                    })
+                } else {
+                    console.log('response not ok')
+                }
             })
         } catch (error) {
             console.log(error)
@@ -55,6 +66,7 @@ export default function Signup(){
 
     return (
         <div className="mx-auto w-1/2">
+            <h2>Create a New Account</h2>
             <form className="flex flex-col gap-y-4" onSubmit={handleSignup}>
                 <label htmlFor="signup-username">Choose username:</label>
                 <input id="signup-username" type="text" name="username" value={formData.username} onChange={handleChange}  />

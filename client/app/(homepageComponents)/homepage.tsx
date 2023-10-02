@@ -13,7 +13,6 @@ export default function Homepage(){
     return (
         <div className="w-full bg-blue-400">
             {isLoggedIn ? <HomeLoggedIn /> : <HomeLoggedOut isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}
-            {!isLoggedIn && <Signup />}
         </div>
     )
 }
