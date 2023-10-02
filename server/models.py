@@ -11,9 +11,11 @@ class User(db.Model, SerializerMixin):
     _password_hash = db.Column(db.String)
     role = db.Column(db.String)
     image = db.Column(db.String)
-    restaurant = db.relationship('Restaurant', back_populates='users', cascade="all, delete-orphan")
 
-    serialize_rules = ('-_password_hash', '-restaurant.users')
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
+    restaurant = db.relationship('Restaurant', back_populates='users', cascade="all, delete-orphan", single_parent=True)
+
+    serialize_rules = ('-_password_hash', '-restaurant.users, -restaurant_id')
 
     @hybrid_property
     def password_hash(self):

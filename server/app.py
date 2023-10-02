@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, make_response
 from flask_restful import Api, Resource
 
 from models import User, Restaurant
@@ -11,27 +11,25 @@ class Users(Resource):
         image = request.files.get('file').read()
         username = request.form.get('username')
         role = request.form.get('role')
-        print(username, "-", role)
+        password = request.form.get('password')
 
         new_user = User(
-            user = username,
-            role = role
+            username = username,
+            role = role,
+            password_hash = password
         )
-        try:
-            save_path = 'images/{}.jpg'.format(username)
-            with open(save_path, 'wb') as file:
-                file.write(image)
-            new_user.image = save_path
-        except:
-            print('Failed to Save Image')
-            return
         try:
             db.session.add(new_user)
             db.session.commit()
-        except:
-            print('Failed to Create User')
-            return
 
+            save_path = 'images/{}.jpg'.format(new_user.id)
+            with open(save_path, 'wb') as file:
+                file.write(image)
+            new_user.image = save_path
+
+        except:
+            return make_response({'error': 'Failed to Create User'}, 422)
+        print(new_user.to_dict())
         response = make_response(new_user.to_dict(), 201)
         return response
 

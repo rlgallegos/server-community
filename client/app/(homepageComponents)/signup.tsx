@@ -1,4 +1,5 @@
 import { useState, FormEvent, ChangeEvent, ChangeEventHandler } from "react"
+import { PassThrough } from "stream"
 
 
 const API_URL = process.env.NEXT_PUBLIC_REACT_APP_API
@@ -6,13 +7,15 @@ const API_URL = process.env.NEXT_PUBLIC_REACT_APP_API
 interface FormData {
     username: string
     role: string
+    password: string
 }
 
 export default function Signup(){
     const [imageFile, setImageFile] = useState<File | null>(null)
     const [formData, setFormData] = useState<FormData>({
         username: '',
-        role: ''
+        role: '',
+        password: ''
     })
 
     function handleSignup(e: FormEvent){
@@ -23,7 +26,7 @@ export default function Signup(){
             request.append('file', imageFile as Blob, 'image.jpg')
             request.append('username', formData.username)
             request.append('role', formData.role)
-            console.log(request)
+            request.append('password', formData.password)
 
             fetch(`${API_URL}/users`, {
                 method: "POST",
@@ -32,7 +35,6 @@ export default function Signup(){
         } catch (error) {
             console.log(error)
         }
-    
     }
     
     function handleChange(e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>){
@@ -62,6 +64,8 @@ export default function Signup(){
                     <option value="server">Server</option>
                     <option value="bartender">Bartender</option>
                 </select>
+                <label>Set Password:</label>
+                <input type="text" name="password" value={formData.password} onChange={handleChange}/>
 
                 <input className="cursor-pointer" type="file" name="image" accept=".jpg, .jpeg, .png" onChange={handleChangeFile} />
                 
