@@ -6,8 +6,21 @@ from config import app
 
 api = Api(app)
 
-class User(Resource):
+class Users(Resource):
     def post(self):
+        image = request.files.get('file').read()
+        username = request.form.get('username')
+        print('username', username)
+
+        if image:
+            save_path = 'images/{}.jpg'.format(username)
+            with open(save_path, 'wb') as file:
+                file.write(image)
+
+api.add_resource(Users, '/users')
+
+class User(Resource):
+    def patch(self):
         image = request.files.get('file').read()
         username = request.form.get('username')
         print('username', username)

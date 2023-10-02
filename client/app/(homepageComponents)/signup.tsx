@@ -1,6 +1,5 @@
-'use client'
+import { useState, FormEvent, ChangeEvent } from "react"
 
-import { FormEvent, ChangeEvent, useState } from "react";
 
 const API_URL = process.env.NEXT_PUBLIC_REACT_APP_API
 
@@ -9,15 +8,14 @@ interface FormData {
     image: string
 }
 
-export default function ProfileForm(){
+export default function Signup(){
+    const [imageFile, setImageFile] = useState<File | null>(null)
     const [formData, setFormData] = useState<FormData>({
         username: '',
         image: ''
     })
-    const [imageFile, setImageFile] = useState<File | null>(null)
 
-
-    function handleEditDetails(e: FormEvent){
+    function handleSignup(e: FormEvent){
         e.preventDefault()
         // handle image upload
         try {
@@ -26,8 +24,8 @@ export default function ProfileForm(){
             request.append('username', formData.username)
             console.log(request)
 
-            fetch(`${API_URL}/user`, {
-                method: "PATCH",
+            fetch(`${API_URL}/users`, {
+                method: "POST",
                 body: request
             })
 
@@ -37,7 +35,6 @@ export default function ProfileForm(){
         }
     
     }
-
     
     function handleChange(e: ChangeEvent<HTMLInputElement>){
         setFormData({
@@ -52,16 +49,14 @@ export default function ProfileForm(){
         }
     }
 
+
     return (
-        <div className="w-1/2 h-full mx-auto bg-slate-100">
-            <h3>Edit Details</h3>
-            <div>
-                <form onSubmit={handleEditDetails}>
-                    <input type="text" name="username" value={formData.username} onChange={handleChange}  />
-                    <input type="file" name="image" accept=".jpg, .jpeg, .png" onChange={handleChangeFile} />
-                    <button type="submit">Submit Changes</button>
-                </form>
-            </div>
+        <div className="mx-auto w-1/2">
+            <form className="" onSubmit={handleSignup}>
+                <input type="text" name="username" value={formData.username} onChange={handleChange}  />
+                <input className="cursor-pointer" type="file" name="image" accept=".jpg, .jpeg, .png" onChange={handleChangeFile} />
+                <button className="cursor-pointer" type="submit">Create Profile</button>
+            </form>
         </div>
     )
 }
