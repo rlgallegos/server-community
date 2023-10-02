@@ -1,9 +1,18 @@
 
 
+interface Props {
+    isLoggedIn: boolean
+    setIsLoggedIn: React.Dispatch<React.SetStateAction<Boolean>>
+  }
+
+export default function LoginForm({isLoggedIn, setIsLoggedIn}: Props){
+
+    function handleLogin(){
+        setIsLoggedIn(!isLoggedIn)
+    }
 
 
-export default function LoginForm(setIsLoggedIn, isLoggedIn){
     return <div>
-        Login Form
+        <button onClick={handleLogin}>Log In</button>
     </div>
 }
