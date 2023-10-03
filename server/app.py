@@ -33,9 +33,19 @@ class Users(Resource):
         response = make_response(new_user.to_dict(), 201)
         return response
 
-            
-
 api.add_resource(Users, '/users')
+
+class Login(Resource):
+    def post(self):
+        data = request.get_json()
+        user = User.query.filter(User.username == data['username'])
+        if not user:
+            return make_response({'error': 'Username Not Found'}, 422)
+        if not user.authenticate():
+            return make_response({'error': 'Password Does Not Match'}, 401)
+        return make_response(user.to_dict(), 200)
+
+api.add_resource(Login, '/login')
 
 # class User(Resource):
 #     def patch(self):

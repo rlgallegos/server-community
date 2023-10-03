@@ -1,6 +1,6 @@
 
 import LoginForm from "../components/loginForm"
-import Signup from "./signup"
+import SignupForm from "../components/signupForm"
 
 interface Props {
     isLoggedIn: boolean
@@ -11,9 +11,9 @@ export default function HomeLoggedOut({isLoggedIn, setIsLoggedIn}: Props){
     return (
         <div>
             <h1>User is logged out</h1>
-            <div className="flex">
-                <LoginForm isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-                <Signup setIsLoggedIn={setIsLoggedIn} />
+            <div className="flex w-5/6 mx-auto gap-2">
+                <LoginForm setIsLoggedIn={setIsLoggedIn} />
+                <SignupForm setIsLoggedIn={setIsLoggedIn} />
             </div>
         </div>
     )

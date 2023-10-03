@@ -12,7 +12,7 @@ interface Props {
     setIsLoggedIn: React.Dispatch<React.SetStateAction<Boolean>>;
 }
   
-export default function Signup({ setIsLoggedIn }: Props){
+export default function SignupForm({ setIsLoggedIn }: Props){
     const [imageFile, setImageFile] = useState<File | null>(null)
     const [formData, setFormData] = useState<FormData>({
         username: '',
@@ -65,7 +65,7 @@ export default function Signup({ setIsLoggedIn }: Props){
 
 
     return (
-        <div className="mx-auto w-1/2">
+        <div className="w-1/2">
             <h2>Create a New Account</h2>
             <form className="flex flex-col gap-y-4" onSubmit={handleSignup}>
                 <label htmlFor="signup-username">Choose username:</label>

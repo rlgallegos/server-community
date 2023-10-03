@@ -4,7 +4,7 @@ import { useState } from "react"
 
 import HomeLoggedIn from "./homepageLoggedIn"
 import HomeLoggedOut from "./homepageLoggedOut"
-import Signup from "./signup"
+import Signup from "../components/signupForm"
 
 export default function Homepage(){
     const [isLoggedIn, setIsLoggedIn] = useState<Boolean>(false)
