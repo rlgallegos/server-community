@@ -1,8 +1,8 @@
-"""Reinitializing
+"""initial
 
-Revision ID: 4ff03743ab8c
+Revision ID: fc2ebc835cc5
 Revises: 
-Create Date: 2023-10-02 16:31:19.127009
+Create Date: 2023-10-02 20:28:51.897765
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4ff03743ab8c'
+revision = 'fc2ebc835cc5'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -28,6 +28,9 @@ def upgrade():
     sa.Column('username', sa.String(), nullable=True),
     sa.Column('_password_hash', sa.String(), nullable=True),
     sa.Column('role', sa.String(), nullable=True),
+    sa.Column('image', sa.String(), nullable=True),
+    sa.Column('restaurant_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['restaurant_id'], ['restaurants.id'], name=op.f('fk_users_restaurant_id_restaurants')),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###

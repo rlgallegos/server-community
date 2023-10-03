@@ -25,8 +25,10 @@ class Users(Resource):
             save_path = 'images/{}.jpg'.format(new_user.id)
             with open(save_path, 'wb') as file:
                 file.write(image)
-            new_user.image = save_path
 
+            new_user.image = save_path
+            db.session.add(new_user)
+            db.session.commit()
         except:
             return make_response({'error': 'Failed to Create User'}, 422)
         print(new_user.to_dict())
@@ -38,10 +40,10 @@ api.add_resource(Users, '/users')
 class Login(Resource):
     def post(self):
         data = request.get_json()
-        user = User.query.filter(User.username == data['username'])
+        user = User.query.filter(User.username == data['username']).first()
         if not user:
             return make_response({'error': 'Username Not Found'}, 422)
-        if not user.authenticate():
+        if not user.authenticate(data['password']):
             return make_response({'error': 'Password Does Not Match'}, 401)
         return make_response(user.to_dict(), 200)
 
