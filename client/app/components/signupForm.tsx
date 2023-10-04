@@ -13,6 +13,7 @@ interface Props {
 }
   
 export default function SignupForm({ setIsLoggedIn }: Props){
+    const [error, setError] = useState('')
     const [imageFile, setImageFile] = useState<File | null>(null)
     const [formData, setFormData] = useState<FormData>({
         username: '',
@@ -24,6 +25,15 @@ export default function SignupForm({ setIsLoggedIn }: Props){
         e.preventDefault()
         // handle image upload
         try {
+            if (!formData.username || formData.role || formData.password){
+                setError('Please Complete Form')
+                return
+            }
+            if (!imageFile){
+                setError('Please Submit a Picture')
+                return
+            }
+
             const request = new FormData()
             request.append('file', imageFile as Blob, 'image.jpg')
             request.append('username', formData.username)
@@ -61,8 +71,6 @@ export default function SignupForm({ setIsLoggedIn }: Props){
             setImageFile(files[0])
         }
     }
-    console.log(formData)
-
 
     return (
         <div className="w-1/2">
@@ -71,8 +79,9 @@ export default function SignupForm({ setIsLoggedIn }: Props){
                 <label htmlFor="signup-username">Choose username:</label>
                 <input id="signup-username" type="text" name="username" value={formData.username} onChange={handleChange}  />
                 
-                <label htmlFor="signup-dropdown">Select an option:</label>
+                {/* <label htmlFor="signup-dropdown">Select an option:</label> */}
                 <select id="signup-dropdown" name="role" value={formData.role} onChange={handleChange}>
+                    <option value="" disabled>Choose your role:</option>
                     <option value="server">Server</option>
                     <option value="bartender">Bartender</option>
                 </select>
@@ -82,6 +91,7 @@ export default function SignupForm({ setIsLoggedIn }: Props){
                 <input className="cursor-pointer" type="file" name="image" accept=".jpg, .jpeg, .png" onChange={handleChangeFile} />
                 
                 <button className="cursor-pointer bg-white text-black w-1/2 mx-auto" type="submit">Create Profile</button>
+                {error && <p className="mx-auto text-red-700 ">{error}</p>}
             </form>
         </div>
     )

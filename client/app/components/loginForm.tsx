@@ -1,3 +1,4 @@
+
 import { useState, ChangeEvent, FormEvent } from "react"
 
 
@@ -13,6 +14,7 @@ interface Props {
   }
 
 export default function LoginForm({ setIsLoggedIn}: Props){
+    const [error, setError] = useState('')
     const [formData, setFormData] = useState<FormData>({
         username: '',
         password: ''
@@ -20,8 +22,15 @@ export default function LoginForm({ setIsLoggedIn}: Props){
 
     function handleLogin(e: FormEvent){
         e.preventDefault()
+        console.log('Sending Login')
+        if (!formData.username || !formData.password){
+            setError('Please Enter Username and Password')
+            return
+        }
+        
         fetch(`${API_URL}/login`, {
             method: "POST",
+            cache: "no-cache",
             headers: {
                 "Content-Type": "application/json"
             },
@@ -37,23 +46,26 @@ export default function LoginForm({ setIsLoggedIn}: Props){
             }
         })
     }
+
     function handleChange(e: ChangeEvent<HTMLInputElement>){
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         })
     }
+    console.log('rendering login component')
 
     return <div className="w-1/2">
             <h2>Login</h2>
             <form className="flex flex-col gap-y-4" onSubmit={handleLogin}>
-                <label htmlFor="login-username">Username:</label>
-                <input id="login-username" type="text" name="username" value={formData.username} onChange={handleChange}  />
+                <label>Username:</label>
+                <input className="text-black" type="text" name="username" value={formData.username} onChange={handleChange}  />
                 
                 <label>Password:</label>
-                <input type="text" name="password" value={formData.password} onChange={handleChange}/>
+                <input className="text-black" type="text" name="password" value={formData.password} onChange={handleChange}/>
                 
                 <button className="cursor-pointer bg-white text-black w-1/2 mx-auto" type="submit">Login</button>
+                {error && <p className="mx-auto text-red-700 ">{error}</p>}
             </form>
     </div>
 }
