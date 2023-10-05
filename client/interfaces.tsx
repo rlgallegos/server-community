@@ -1,4 +1,5 @@
-
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
 
 export interface User {
     id: number;
@@ -16,7 +17,13 @@ export interface AuthState {
     isAuthenticated: boolean;
 }
   
-export interface AuthAction {
-    type: string; // Use string literals for action types
-    payload?: any; // Payload can be any data associated with the action
+export interface LoginAction {
+    type: typeof LOGIN;
+    payload: User;
 }
+
+export interface LogoutAction {
+    type: typeof LOGOUT;
+}
+
+export type AuthAction = LoginAction | LogoutAction;

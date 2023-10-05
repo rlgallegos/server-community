@@ -1,20 +1,25 @@
-// authActions.ts
-import { Dispatch } from 'redux';
-import { User, AuthAction, AuthState } from './interfaces';
+import { User, AuthState, AuthAction, LOGIN, LOGOUT } from './interfaces';
 
-export const login = (userData: User) => (dispatch: Dispatch<AuthAction>) => {
-    dispatch({ type: 'LOGIN', payload: userData });
-};
+import { configureStore } from '@reduxjs/toolkit'
 
-export const logout = () => (dispatch: Dispatch<AuthAction>) => {
-    dispatch({ type: 'LOGOUT' });
-};
+// Actions
+export const login = (userData: User): AuthAction => ({
+    type: LOGIN,
+    payload: userData,
+});
+  export const logout = (): AuthAction => ({
+    type: LOGOUT,
+});
 
+
+// Initial State
 const initialState: AuthState = {
     user: null,
     isAuthenticated: false,
 };
 
+
+// Reducer
 const authReducer = (state = initialState, action: AuthAction): AuthState => {
     switch (action.type) {
         case 'LOGIN':
@@ -34,4 +39,10 @@ const authReducer = (state = initialState, action: AuthAction): AuthState => {
     }
 };
 
-export default authReducer;
+
+// Store
+const store = configureStore({
+    reducer: authReducer
+  });
+
+export default store;

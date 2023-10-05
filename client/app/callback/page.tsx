@@ -1,5 +1,7 @@
 import { redirect } from "next/navigation"
 
+import UserInfo from "./userInfo"
+
 
 
 const API_URL = process.env.NEXT_PUBLIC_REACT_APP_API
@@ -23,13 +25,13 @@ export default async function Callback({searchParams}: any){
     if (!userData){
         redirect('/')
     }
-    
+    // userData.isAuthenticated = false
     console.log('user data:', userData)
 
 
     return (
-        <div className="bg-green-200 min-h-screen w-full">
-            <h1 className="text-black">Callback Route Reached</h1>
+        <div className="bg-green-200 min-h-screen w-full text-black flex items-center">
+            <UserInfo userData={userData} />
         </div>
     )
 }
