@@ -15,7 +15,7 @@ export default function HomeLoggedOut({isLoggedIn, setIsLoggedIn}: Props){
             <div className="flex w-5/6 mx-auto gap-2">
                 {/* <LoginForm setIsLoggedIn={setIsLoggedIn} /> */}
                 <LoginForm2 />
-                <SignupForm setIsLoggedIn={setIsLoggedIn} />
+                {/* <SignupForm setIsLoggedIn={setIsLoggedIn} /> */}
             </div>
         </div>
     )

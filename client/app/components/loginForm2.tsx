@@ -1,14 +1,12 @@
 import { useEffect } from "react";
 
 
-
 const clientID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
 const callbackURL = process.env.NEXT_PUBLIC_GOOGLE_CALLBACK_URL
 
 export default function LoginForm2(){
     let oauthUrl = ""
     useEffect(() => {
-        console.log(clientID, callbackURL)
         oauthUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientID}&redirect_uri=${callbackURL}&response_type=code&scope=openid%20email%20profile`
     }, []);
 

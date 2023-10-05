@@ -105,7 +105,6 @@ def exchange_token():
 
         # POST to OAuth to get token
         response = requests.post(token_url, data=payload)
-        print(response.status_code)
 
         if response.status_code == 200:
             token_data = response.json()
@@ -122,9 +121,9 @@ def exchange_token():
                 return res
 
             else:
-                return make_response({'error': 'Failed to retrieve user data'})
+                return make_response({'error': 'Failed to retrieve user data'}, 422)
         else:
-            return make_response({'error': 'Failed to retriever oauth access token'})
+            return make_response({'error': 'Failed to retriever oauth access token'}, 422)
 
         return make_response(user_info, 200)
 

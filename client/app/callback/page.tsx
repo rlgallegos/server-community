@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation"
 
 
 
@@ -11,6 +12,7 @@ const getToken = async (authorizationCode: string) => {
         },
         body: JSON.stringify(authorizationCode)
     })
+    if (!res.ok) return undefined
     return res.json()
 }
 
@@ -18,16 +20,16 @@ const getToken = async (authorizationCode: string) => {
 
 export default async function Callback({searchParams}: any){
     const userData = await getToken(searchParams.code)
+    if (!userData){
+        redirect('/')
+    }
     
-    console.log(userData)
+    console.log('user data:', userData)
 
 
     return (
-        <div className="bg-black min-h-screen w-full">
-            <h1 className="text-white">Callback Route Reached</h1>
-
-            
-            
+        <div className="bg-green-200 min-h-screen w-full">
+            <h1 className="text-black">Callback Route Reached</h1>
         </div>
     )
 }

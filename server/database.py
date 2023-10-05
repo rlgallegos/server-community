@@ -7,12 +7,10 @@ def update_database_with_oauth(data):
 
     # user already exists
     if user:
-        print('user exists')
         return make_response(user.to_dict(), 200)
 
     # new user
     else:
-        print('user does not exist yet')
         new_user = User(
             google_id = data['id'],
             name = data['name'],
@@ -24,9 +22,8 @@ def update_database_with_oauth(data):
             db.session.commit()
             return make_response(new_user.to_dict(), 201)
         except Exception as e:
-            print('failed to create user')
             print(e)
-            return make_response({'error': 'Failed to create new user'})
+            return make_response({'error': 'Failed to create new user'}, 422)
 
 
 
