@@ -1,8 +1,12 @@
+import os
+import requests
 from flask import request, make_response, session
 from flask_restful import Api, Resource
 
+
 from models import User, Restaurant
 from config import app, db
+from database import update_database_with_oauth
 
 api = Api(app)
 
@@ -82,6 +86,54 @@ class CheckSession(Resource):
 
 
 api.add_resource(CheckSession, '/check_session')
+
+
+# Custom OAuth Route
+@app.route('/oauth/token-exchange', methods=['POST'])
+def exchange_token():
+    if request.method == 'POST':
+        authCode = request.get_json()
+        token_url = 'https://oauth2.googleapis.com/token'
+
+        payload = {
+            'code': authCode,
+            'client_id': os.environ.get('GOOGLE_CLIENT_ID'),
+            'client_secret': os.environ.get('GOOGLE_CLIENT_SECRET'),
+            'redirect_uri': os.environ.get('GOOGLE_CALLBACK_URI'),
+            'grant_type': 'authorization_code',
+        }
+
+        # POST to OAuth to get token
+        response = requests.post(token_url, data=payload)
+        print(response.status_code)
+
+        if response.status_code == 200:
+            token_data = response.json()
+            access_token = token_data.get('access_token')
+
+            # GET to OAuth to get user data
+            user_info_url = 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=' + access_token
+            user_info_response = requests.get(user_info_url)
+
+            if user_info_response.status_code == 200:
+                user_info = user_info_response.json()
+
+                res = update_database_with_oauth(user_info)
+                return res
+
+            else:
+                return make_response({'error': 'Failed to retrieve user data'})
+        else:
+            return make_response({'error': 'Failed to retriever oauth access token'})
+
+        return make_response(user_info, 200)
+
+
+
+
+
+
+
 
 
 

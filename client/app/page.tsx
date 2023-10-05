@@ -7,11 +7,9 @@ const API_URL = process.env.NEXT_PUBLIC_REACT_APP_API
 
 export default function Home() {
     console.log('Home component rendering')
-    const image = 'ab'
 
   return (
     <div className='min-h-screen flex flex-col bg-slate-300'>
-        <NavBar image={image} />
         <Homepage />
     </div>
   )

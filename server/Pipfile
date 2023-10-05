@@ -13,6 +13,7 @@ flask-sqlalchemy = "*"
 flask-migrate = "*"
 flask-session = "*"
 sqlalchemy-serializer = "*"
+requests = "*"
 
 [dev-packages]
 
