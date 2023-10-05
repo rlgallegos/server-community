@@ -4,6 +4,8 @@ import { useState, ChangeEvent, FormEvent } from "react"
 
 
 const API_URL = process.env.NEXT_PUBLIC_REACT_APP_API
+  const clientID = process.env.GOOGLE_CLIENT_ID;
+  const callbackURL = process.env.GOOGLE_CALLBACK_URL;
 
 interface FormData {
     username: string
