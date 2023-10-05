@@ -3,9 +3,8 @@ import Image from 'next/image'
 
 import { User } from '@/interfaces'
 
+
 export default function UserInfo({ userData }: { userData: User }) {
-
-
     return (
         <div className='w-full mx-auto flex flex-col items-center justify-center'>
             <Image src={userData.image} alt='user' height={300} width={300}/>
