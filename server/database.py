@@ -3,7 +3,7 @@ from models import User
 from flask import make_response
 
 def update_database_with_oauth(data):
-    user = User.query.filter(User.google_id == data['id']).first()
+    user = User.query.filter(User.email == data['email']).first()
 
     # user already exists
     if user:
@@ -12,9 +12,8 @@ def update_database_with_oauth(data):
     # new user
     else:
         new_user = User(
-            google_id = data['id'],
             name = data['name'],
-            image = data['picture'],
+            image = data['image'],
             email = data['email']
         )
         try:
@@ -26,16 +25,7 @@ def update_database_with_oauth(data):
             return make_response({'error': 'Failed to create new user'}, 422)
 
 
-
-
-# GOOGLE AUTH DATA (for later use if necessary)
-# {
-#   email: 'rlgallegos85@gmail.com',
-#   family_name: 'Gallegos',
-#   given_name: 'Robert',
-#   id: '104149366513844669158',
-#   locale: 'en',
-#   name: 'Robert Gallegos',
-#   picture: 'https://lh3.googleusercontent.com/a/ACg8ocK8ryY8TGHDS6OYceSgIedtmnA0hs8q34wvqRBepBWB=s96-c',
-#   verified_email: true
-# }
+# Google Next Auth example data:
+# 1. email: "example@gmail.com"
+# 2. image: "https://lh3.googleusercontent.com/a/ACg8ocK8ryY8TGHDS6OYceSgIedtmnA0hs8q34wvqRBepBWB=s96-c"
+# 3. name: "That Guy"

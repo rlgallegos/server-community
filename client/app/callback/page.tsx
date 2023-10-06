@@ -10,7 +10,6 @@ const API_URL = process.env.NEXT_PUBLIC_REACT_APP_API
 const getToken = async (authorizationCode: string) => {
     const res = await fetch(`${API_URL}/oauth/token-exchange`, {
         method: "POST",
-        cache: 'no-store',
         headers: {
             'Content-Type': 'application/json'
         },
@@ -29,7 +28,6 @@ export default async function Callback({searchParams}: any){
     } else {
         store.dispatch(login(userData))
     }
-    // userData.isAuthenticated = false
     console.log('user data:', userData)
 
 

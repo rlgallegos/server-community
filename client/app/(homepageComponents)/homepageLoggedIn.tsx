@@ -1,11 +1,12 @@
+import { User } from "@/interfaces"
 
 
 
+export default function HomeLoggedIn({userData}: {userData : User | null}){
 
-export default function HomeLoggedIn(){
     return (
         <div>
-            <h1>User is Logged In</h1>
+            <h1>User is Logged in</h1>
         </div>
     )
 }

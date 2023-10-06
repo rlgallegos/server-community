@@ -88,6 +88,24 @@ class CheckSession(Resource):
 api.add_resource(CheckSession, '/check_session')
 
 
+
+
+
+# Next OAuth create / update database
+@app.route('/oauth/update', methods=['POST'])
+def update_database():
+    if request.method == 'POST':
+        data = request.get_json()
+        res = update_database_with_oauth(data)
+        return res
+
+
+
+
+
+
+
+
 # Custom OAuth Route
 @app.route('/oauth/token-exchange', methods=['POST'])
 def exchange_token():

@@ -1,13 +1,17 @@
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 
+export interface Restaurant {
+    id: number,
+    name: string
+}
+
 export interface User {
     id: number;
     email: string;
-    google_id: string;
     image: string;
     name: string;
-    restaurant: string | null;
+    restaurant: Restaurant | null;
     restaurant_id: number | null;
     role: string | null;
 }
