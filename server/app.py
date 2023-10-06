@@ -1,6 +1,6 @@
 import os
 import requests
-from flask import request, make_response, session
+from flask import request, make_response
 from flask_restful import Api, Resource
 
 
@@ -41,32 +41,18 @@ class Users(Resource):
 
 api.add_resource(Users, '/users')
 
-class Login(Resource):
-    def post(self):
-        print('entering login once')
-        data = request.get_json()
-        user = User.query.filter(User.username == data['username']).first()
-        print('username:', user.username)
+class UserByEmail(Resource):
+    def get(self, email):
+        user = User.query.filter(User.email == email).first()
         if not user:
-            return make_response({'error': 'Username Not Found'}, 422)
-        if not user.authenticate(data['password']):
-            return make_response({'error': 'Password Does Not Match'}, 401)
+            return make_response({'error': "User Not Found"}, 404)
+        return make_response(user.to_dict(), 200)
 
-        session['user_id'] = user.id
-        session['role'] = user.role
-
-        # session.permanent = True
-        response = make_response(user.to_dict(), 200)
-        return response
-
-api.add_resource(Login, '/login')
+api.add_resource(UserByEmail, '/user/<string:email>')
 
 class CheckSession(Resource):
     def get(self):
-        if 'user_id' not in session:
-            print('session not found')
-            return
-        # print(session.get('user_id'))
+
         user = User.query.filter(User.id == session.get('user_id')).first()
         if not user:
             return make_response({'error': 'Unauthorized'}, 401)
@@ -106,7 +92,8 @@ def update_database():
 
 
 
-# Custom OAuth Route
+# Custom OAuth Route (Currently not in use)
+
 @app.route('/oauth/token-exchange', methods=['POST'])
 def exchange_token():
     if request.method == 'POST':
@@ -144,30 +131,6 @@ def exchange_token():
             return make_response({'error': 'Failed to retriever oauth access token'}, 422)
 
         return make_response(user_info, 200)
-
-
-
-
-
-
-
-
-
-
-# class User(Resource):
-#     def patch(self):
-#         image = request.files.get('file').read()
-#         username = request.form.get('username')
-#         print('username', username)
-
-#         if image:
-#             save_path = 'images/new_image.jpg'
-#             with open(save_path, 'wb') as file:
-#                 file.write(image)
-
-# api.add_resource(User, '/user')
-
-
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

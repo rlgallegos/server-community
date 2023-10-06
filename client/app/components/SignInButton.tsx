@@ -5,6 +5,7 @@ import { useEffect } from "react";
 const API_URL = process.env.NEXT_PUBLIC_REACT_APP_API
 
 export default function SignInButton(){
+    const tailwindCSSButton = ''
     const {data: session} = useSession()
 
     // Checking if already in database / adding if necessary
@@ -36,7 +37,7 @@ export default function SignInButton(){
         )
     } else {
         return (
-            <div>
+            <div className="w-24 h-8 rounded-md bg-white flex items-center justify-center border border-black">
                 <button onClick={() => signIn()}>Sign In</button>
             </div>
         )

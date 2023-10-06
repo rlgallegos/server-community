@@ -6,7 +6,6 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_migrate import Migrate
-from flask_session import Session
 from datetime import timedelta
 
 metadata = MetaData(naming_convention={
@@ -27,18 +26,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 migrate = Migrate(app, db)
 
-app.config['SESSION_TYPE'] = 'filesystem'
-app.config['SESSION_INTERFACE'] = 'filesystem'
-app.config['SESSION_COOKIE_SAMESITE'] = 'None'
-app.config['SESSION_COOKIE_SECURE'] = False
-# app.config['SESSION_USE_SIGNER'] = True
-app.config['SESSION_PERMANENT'] = True
-# app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=30) 
-# app.config['SESSION_COOKIE_NAME'] = 'test_cookie'
 app.config['CORS_HEADERS'] = 'Content-Type'
-
-print('configuring session')
-Session(app)
 
 CORS(app, supports_credentials=True, origin='http://localhost:4000')
 
