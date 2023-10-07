@@ -10,4 +10,7 @@ export default function HomeLoggedIn({userData}: {userData : User | null}){
             </div>
         )
     }
+    else {
+        return <div>Error. Please Log Back In</div>
+    }
 }

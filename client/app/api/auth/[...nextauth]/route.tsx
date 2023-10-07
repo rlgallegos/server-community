@@ -8,7 +8,6 @@ export const handler = NextAuth({
             clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET ?? ""
         })
     ],
-    secret: process.env.NEXT_PUBLIC_NEXT_AUTH_SECRET,
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
           return true

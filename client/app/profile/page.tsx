@@ -1,24 +1,19 @@
-import NavBar from "../components/navbar"
-import ProfileForm from "../components/profileForm"
-import UserInfo from "../callback/userInfo"
+import { getServerSession } from "next-auth"
+import userProfile from "./userProfile"
+import { handler } from "../api/auth/[...nextauth]/route"
 
-import Test from "./test"
-import store from "@/authorization"
-import { redirect } from "next/navigation"
 
-export default function Profile(){
-    const state = store.getState()
-    if (!state.isAuthenticated){
-        redirect('/')
-    } else {
-        console.log(state)
-    }
+
+export default async function Profile(){
+    // const session = await getServerSession(handler)
+    
+    // if (session && session.user){
+    //     console.log('session variable in Profile server component:', session.user)
+    // }
 
 
     return <div className="min-h-screen bg-green-300 flex flex-col text-black">
         <h1>Profile Page</h1>
-        <Test />
-        {/* <UserInfo /> */}
-        {/* <ProfileForm /> */}
+
     </div>
 }
