@@ -31,6 +31,7 @@ export default function ClickableImage({src, alt, height, width, callback}: Prop
     return (
         <div>
             <Image
+            className='cursor-pointer'
             src={src}
             alt={alt}
             height={height}
@@ -38,6 +39,7 @@ export default function ClickableImage({src, alt, height, width, callback}: Prop
             onClick={handleImageClick}
             />
             <input 
+            className='hidden'
             type="file" 
             name="image" 
             ref={fileInputRef}
