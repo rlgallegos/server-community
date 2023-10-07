@@ -1,19 +1,25 @@
 import { getServerSession } from "next-auth"
-import userProfile from "./userProfile"
-import { handler } from "../api/auth/[...nextauth]/route"
 
-
+import UserProfile from "./userProfile"
 
 export default async function Profile(){
-    // const session = await getServerSession(handler)
+    const session = await getServerSession()
     
-    // if (session && session.user){
-    //     console.log('session variable in Profile server component:', session.user)
-    // }
+    const restaurantResponse = await fetch(`${process.env.NEXT_PUBLIC_REACT_APP_API}/restaurants`)
+    const restaurantData = await restaurantResponse.json()
 
 
-    return <div className="min-h-screen bg-green-300 flex flex-col text-black">
-        <h1>Profile Page</h1>
+    if (session && session.user){
+        const userResponse = await fetch(`${process.env.NEXT_PUBLIC_REACT_APP_API}/user/${session.user.email}`)
+        if (userResponse.ok){
+            const userData = await userResponse.json()
+            return <div className="min-h-screen bg-green-300 flex flex-col text-black items-center justify-center ">
+                <h1 className="mx-auto text-3xl">Profile Page</h1>
+                <UserProfile userData={userData} restaurantData={restaurantData} />
+            </div>
+        } else {
+            <div>Error</div>
+        }
 
-    </div>
+    }
 }

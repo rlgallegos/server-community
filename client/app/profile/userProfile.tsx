@@ -1,17 +1,27 @@
 'use client'
+import Image from "next/image"
 
-import { User } from "@/interfaces"
-import { useSession } from "next-auth/react"
-import { redirect } from "next/navigation"
+import { User, Restaurant } from "@/interfaces"
+
+import AddRestaurantForm from "./addRestaurantForm"
+
+interface Props{
+    userData: User,
+    restaurantData: Restaurant[]
+}
 
 
-export default function userProfile({userData}: {userData: User | null}){
-    const {data:session} = useSession()
-    // if (!session || !session.user){
-    //     redirect('/')
-    // }
+export default function UserProfile({userData, restaurantData}: Props){
+
 
     return <div>
-        Client profile
+        <div className='w-full mx-auto flex flex-col items-center justify-center'>
+            <Image src={userData.image} alt='user' height={300} width={300}/>
+            <h1>{userData.name}</h1>
+            <h3>Email: {userData.email}</h3>
+            <h3>Restaurant: {userData.restaurant ? userData.restaurant.name : 'None Selected'}</h3>
+            <h3>Job: {userData.role ? userData.role : 'None Selected'}</h3>
+            <AddRestaurantForm restaurantData={restaurantData} />
+        </div>
     </div>
 }

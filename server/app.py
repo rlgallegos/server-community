@@ -10,6 +10,8 @@ from database import update_database_with_oauth
 
 api = Api(app)
 
+# User
+
 class Users(Resource):
     def post(self):
         image = request.files.get('file').read()
@@ -35,7 +37,6 @@ class Users(Resource):
             db.session.commit()
         except:
             return make_response({'error': 'Failed to Create User'}, 422)
-        print(new_user.to_dict())
         response = make_response(new_user.to_dict(), 201)
         return response
 
@@ -50,31 +51,25 @@ class UserByEmail(Resource):
 
 api.add_resource(UserByEmail, '/user/<string:email>')
 
-class CheckSession(Resource):
+
+# Restaurant
+
+class Restaurants(Resource):
     def get(self):
+        rest_objs = Restaurant.query.all()
+        try:
+            restaurants = [rest.to_dict() for rest in rest_objs]
+            return make_response(restaurants, 200)
+        except Exception as e:
+            return make_response({'error': ""}, 401)
 
-        user = User.query.filter(User.id == session.get('user_id')).first()
-        if not user:
-            return make_response({'error': 'Unauthorized'}, 401)
-        else:
-            image_path = 'images/{}'.format(user.id)
-
-            # Read the image file and encode it as base64
-            with open(image_path, "rb") as image_file:
-                image_data = base64.b64encode(image_file.read()).decode('utf-8')
-
-            # Create a response JSON containing user data and the base64-encoded image
-            response_data = {
-                "user_data": user.to_dict(),
-                "image_data": image_data
-            }
-            return make_response(response_data, 200)
-
-
-api.add_resource(CheckSession, '/check_session')
+api.add_resource(Restaurants, '/restaurants')
 
 
 
+
+
+# Custom
 
 
 # Next OAuth create / update database
