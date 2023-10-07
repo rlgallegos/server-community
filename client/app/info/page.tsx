@@ -1,18 +1,14 @@
+import { getServerSession } from "next-auth"
 
 
-import store from "@/authorization"
-import { redirect } from "next/navigation"
+export default async function Page() {
+    const session = await getServerSession()
 
-export default function Page() {
-    const state = store.getState()
-    if (!state.isAuthenticated){
-        redirect('/')
-    } else {
-        console.log(state)
+    if (session && session.user){
+        return (
+            <div className="min-h-screen bg-blue-300">
+                <h1>The Info Page</h1>
+            </div>
+        )
     }
-    return (
-        <div className="min-h-screen bg-blue-300">
-            <h1>The Info Page</h1>
-        </div>
-    )
 }

@@ -2,15 +2,17 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import { Restaurant } from "@/interfaces"
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, SetStateAction, Dispatch, useState } from 'react';
+import { User } from '@/interfaces';
 
 interface Props{
     restaurantData: Restaurant[]
-    userID: number
+    userData: User
+    setUserData: Dispatch<SetStateAction<User>>
 }
 
 
-export default function AddRestaurantForm({restaurantData, userID}: Props){
+export default function AddRestaurantForm({restaurantData, userData, setUserData}: Props){
     const [selectedRestaurant, setSelectedRestaurant] = useState<number | string>(0)
     const [role, setRole] = useState<string>('')
     const [error, setError] = useState<string>('')
@@ -32,7 +34,7 @@ export default function AddRestaurantForm({restaurantData, userID}: Props){
             'role': role
         }
 
-        fetch(`${process.env.NEXT_PUBLIC_REACT_APP_API}/user/${userID}`, {
+        fetch(`${process.env.NEXT_PUBLIC_REACT_APP_API}/user/${userData.id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
@@ -40,7 +42,7 @@ export default function AddRestaurantForm({restaurantData, userID}: Props){
             body: JSON.stringify(request)
         }).then(res => {
             if (res.ok){
-                res.json().then(data => console.log(data))
+                res.json().then(data => setUserData(data))
             } else {
                 res.json().then(e => setError(e.error))
             }

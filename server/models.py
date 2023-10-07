@@ -11,6 +11,7 @@ class User(db.Model, SerializerMixin):
     email = db.Column(db.String)
     role = db.Column(db.String)
     image = db.Column(db.String)
+    imgur_delete_hash = db.Column(db.String)
 
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
     restaurant = db.relationship('Restaurant', back_populates='users', cascade="all, delete-orphan", single_parent=True)

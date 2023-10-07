@@ -32,3 +32,6 @@ with app.app_context():
     # db.session.commit()
 
     robert = User.query.filter(User.id == 1).first()
+    robert.imgur_delete_hash = '4QbC71HqeYVcZeY'
+    db.session.add(robert)
+    db.session.commit()

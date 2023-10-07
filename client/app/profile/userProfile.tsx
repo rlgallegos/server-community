@@ -6,12 +6,13 @@ import ClickableImage from "../components/clickableImage"
 import { useState } from "react"
 
 interface Props{
-    userData: User,
+    user: User,
     restaurantData: Restaurant[]
 }
 
-export default function UserProfile({userData, restaurantData}: Props){
+export default function UserProfile({user, restaurantData}: Props){
     const [error, setError] = useState<string>('')
+    const [userData, setUserData] = useState<User>(user)
 
     async function handleUpdateImage(file: File){
         if (file){
@@ -23,7 +24,7 @@ export default function UserProfile({userData, restaurantData}: Props){
                 body: request
             })
             if (res.ok){
-                res.json().then(data => console.log(data))
+                res.json().then(data => setUserData(data))
             } else {
                 res.json().then(e => setError(e.error))
             }
@@ -38,7 +39,7 @@ export default function UserProfile({userData, restaurantData}: Props){
             <h3>Email: {userData.email}</h3>
             <h3>Restaurant: {userData.restaurant ? userData.restaurant.name : 'None Selected'}</h3>
             <h3>Job: {userData.role ? userData.role : 'None Selected'}</h3>
-            <AddRestaurantForm userID={userData.id} restaurantData={restaurantData} />
+            <AddRestaurantForm userData={userData} setUserData={setUserData} restaurantData={restaurantData} />
         </div>
     </div>
 }

@@ -1,5 +1,6 @@
 import os
 import requests
+import redis
 from flask import request, make_response
 from flask_restful import Api, Resource
 
@@ -24,10 +25,11 @@ class UserByID(Resource):
             image = request.files.get('file').read()
 
             # Save to Imgur and Return Link
-            save_path = save_to_imgur(user.id, image)
+            save_path, del_hash = save_to_imgur(user.id, image, user.imgur_delete_hash)
 
             try:
                 user.image = save_path
+                user.imgur_delete_hash = del_hash
                 db.session.add(user)
                 db.session.commit()
             except:

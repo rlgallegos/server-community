@@ -30,8 +30,6 @@ export default function ProfileForm(){
                 method: "PATCH",
                 body: request
             })
-
-
         } catch (error) {
             console.log(error)
         }
