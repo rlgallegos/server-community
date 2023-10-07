@@ -14,9 +14,11 @@ interface Props{
 export default function UserProfile({userData, restaurantData}: Props){
 
 
+    // function handleUpdateImage(e: )
+
     return <div>
         <div className='w-full mx-auto flex flex-col items-center justify-center'>
-            <Image src={userData.image} alt='user' height={300} width={300}/>
+            <Image src={userData.image} alt='user' height={300} width={300} />
             <h1>{userData.name}</h1>
             <h3>Email: {userData.email}</h3>
             <h3>Restaurant: {userData.restaurant ? userData.restaurant.name : 'None Selected'}</h3>
