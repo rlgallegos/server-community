@@ -42,7 +42,7 @@ export default function AddRestaurantForm({restaurantData, userID}: Props){
             if (res.ok){
                 res.json().then(data => console.log(data))
             } else {
-                res.json().then(e => setError(e))
+                res.json().then(e => setError(e.error))
             }
         })
     }

@@ -42,6 +42,24 @@ class Users(Resource):
 
 api.add_resource(Users, '/users')
 
+class UserByID(Resource):
+    def patch(self, id):
+        data = request.get_json()
+        user = User.query.filter(User.id == id).first()
+        if not user:
+            return make_response({'error': "User Not Found"}, 401)
+
+        for attr in data:
+            setattr(user, attr, data[attr])
+        try:
+            db.session.add(user)
+            db.session.commit()
+            return make_response(user.to_dict(rules=('-restaurant.users',)), 200)
+        except:
+            return make_response({'error': "Unable To Update User"}, 422)
+
+api.add_resource(UserByID, '/user/<int:id>')
+
 class UserByEmail(Resource):
     def get(self, email):
         user = User.query.filter(User.email == email).first()
@@ -50,7 +68,6 @@ class UserByEmail(Resource):
         return make_response(user.to_dict(), 200)
 
 api.add_resource(UserByEmail, '/user/<string:email>')
-
 
 # Restaurant
 
