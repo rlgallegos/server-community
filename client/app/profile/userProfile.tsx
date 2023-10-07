@@ -21,7 +21,7 @@ export default function UserProfile({userData, restaurantData}: Props){
             <h3>Email: {userData.email}</h3>
             <h3>Restaurant: {userData.restaurant ? userData.restaurant.name : 'None Selected'}</h3>
             <h3>Job: {userData.role ? userData.role : 'None Selected'}</h3>
-            <AddRestaurantForm restaurantData={restaurantData} />
+            <AddRestaurantForm userID={userData.id} restaurantData={restaurantData} />
         </div>
     </div>
 }
