@@ -1,12 +1,11 @@
 import os
 import requests
-import redis
 from flask import request, make_response
 from flask_restful import Api, Resource
 
 
 from models import User, Restaurant
-from config import app, db
+from config import app, db, redis_client
 from database import update_database_with_oauth
 from helpers import save_to_imgur
 
@@ -74,11 +73,21 @@ class Restaurants(Resource):
 
 api.add_resource(Restaurants, '/restaurants')
 
+class MessagesByRole(Resource):
+    def get(self, rest_id, role):
+        # Construct the Redis key based on rest_id and role
+        redis_key = f"{rest_id}:{role}"
+
+        # Retrieve the most recent 50 messages from the Redis list
+        try:
+            messages = redis_client.lrange(redis_key, 0, 49)
+            print(messages)
+            return make_response(messages, 200)
+        except:
+            make_response({"error": "Failed to Load Messages"})
 
 
-
-
-# Custom
+api.add_resource(MessagesByRole, '/messages/<int:rest_id>/<string:role>')
 
 
 # Next OAuth create / update database
