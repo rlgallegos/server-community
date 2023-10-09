@@ -1,6 +1,5 @@
 import os
 import requests
-import json
 from flask import request, make_response
 from flask_restful import Api, Resource
 
@@ -8,7 +7,7 @@ from flask_restful import Api, Resource
 from models import User, Restaurant
 from config import app, db, redis_client
 from database import update_database_with_oauth
-from helpers import save_to_imgur
+from helpers import save_to_imgur, convert_messages_format
 
 api = Api(app)
 
@@ -79,7 +78,7 @@ class MessagesByRole(Resource):
         redis_key = f"{rest_id}:{role}"
         try:
             string_messages = redis_client.lrange(redis_key, 0, 49)
-            messages = [json.loads(s_message) for s_message in string_messages]
+            messages = convert_messages_format(string_messages)
             return make_response(messages, 200)
         except:
             make_response({"error": "Failed to Load Messages"})

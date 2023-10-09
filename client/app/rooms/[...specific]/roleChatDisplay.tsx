@@ -9,6 +9,7 @@ interface Props{
 
 export default function RoleChatDisplay({messages}: Props){
     const messageList = messages.map(message => {
+        console.log(message)
         return <li key={uuidv4()}>{message.timeStamp}{message.user}: {message.text}</li>
     })
     return (

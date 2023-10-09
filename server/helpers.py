@@ -1,7 +1,12 @@
 import os
 import requests
 import imghdr 
+import json
+from datetime import datetime
 
+
+
+# Imgur Fetches
 def save_to_imgur(id, file, prev_del_hash):
 
     # Delete previous picture from Imgur
@@ -47,3 +52,17 @@ def delete_from_imgur(del_hash):
         return True
     else:
         return False
+
+
+
+# Converting Redis Messages to Correct Format
+
+def convert_messages_format(string_messages):
+    messages = [convert_single_message_format(s_message) for s_message in string_messages]
+    return messages
+
+def convert_single_message_format(string_message):
+    json_message = json.loads(string_message)
+    dt_object = datetime.fromtimestamp(json_message['timeStamp'])
+    json_message['timeStamp'] = dt_object.strftime("%A %m/%d %I:%M %p")
+    return json_message
