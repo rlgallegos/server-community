@@ -1,5 +1,6 @@
 import os
 import requests
+import json
 from flask import request, make_response
 from flask_restful import Api, Resource
 
@@ -75,16 +76,25 @@ api.add_resource(Restaurants, '/restaurants')
 
 class MessagesByRole(Resource):
     def get(self, rest_id, role):
-        # Construct the Redis key based on rest_id and role
         redis_key = f"{rest_id}:{role}"
-
-        # Retrieve the most recent 50 messages from the Redis list
         try:
-            messages = redis_client.lrange(redis_key, 0, 49)
-            print(messages)
+            string_messages = redis_client.lrange(redis_key, 0, 49)
+            messages = [json.loads(s_message) for s_message in string_messages]
             return make_response(messages, 200)
         except:
             make_response({"error": "Failed to Load Messages"})
+    
+
+    def post(self, rest_id, role):
+        data = request.get_json()
+        json_data = json.dumps(data)
+        redis_key = f"{rest_id}:{role}"
+        try:
+            redis_client.rpush(redis_key, json_data)
+            return make_response(data, 200)
+        except Exception as e:
+            print(e)
+            return make_response({"error": "Failed to Save Message"}, 422)
 
 
 api.add_resource(MessagesByRole, '/messages/<int:rest_id>/<string:role>')

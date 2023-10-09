@@ -21,6 +21,13 @@ export interface AuthState {
     isAuthenticated: boolean;
 }
   
+export interface Message {
+    text: string,
+    user: string,
+    timeStamp: number
+}
+
+
 export interface LoginAction {
     type: typeof LOGIN;
     payload: User;

@@ -1,8 +1,10 @@
 import { redirect } from "next/navigation"
 import RoleChatContainer from "./roleChatContainer"
 
+import { Message } from "@/interfaces"
+
 interface Params{
-    specific: Array<string>
+    specific: Array<Message>
 }
 interface Props{
     params: Params
