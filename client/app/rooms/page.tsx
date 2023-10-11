@@ -8,7 +8,7 @@ import { getServerSession } from "next-auth"
 export default async function Rooms(){
     const session = await getServerSession()
 
-    if (session && session.user){
+    if (session?.user){
         const userResponse = await fetch(`${process.env.NEXT_PUBLIC_REACT_APP_API}/user/${session.user.email}`)
         if (userResponse.ok){
             const userData = await userResponse.json()

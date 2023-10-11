@@ -22,9 +22,9 @@ export default function RoleChatInput({setMessages}: Props){
     })
 
     function handleChange(e: ChangeEvent<HTMLTextAreaElement>){
-        const time = Math.floor(Date.now() / 1000)
-        let username = ''
-        if (session && session.user && session.user.name){
+        const time: number = Math.floor(Date.now() / 1000)
+        let username: string = ''
+        if (session?.user?.name){
             username = session.user.name
         }
         setNewMessage({
@@ -36,11 +36,11 @@ export default function RoleChatInput({setMessages}: Props){
 
     async function handleSubmit(e: FormEvent){
         e.preventDefault()
-        const regex = /\/rooms\/(\d+)\/(.+)/
-        const match = pathname.match(regex)
+        const regex: RegExp = /\/rooms\/(\d+)\/(.+)/
+        const match: RegExpMatchArray | null = pathname.match(regex)
         
-        let restID = ''
-        let role = ''
+        let restID: string = ''
+        let role: string = ''
         if (match) {
           restID = match[1]
           role = match[2]
@@ -55,7 +55,7 @@ export default function RoleChatInput({setMessages}: Props){
             body: JSON.stringify(newMessage)
         })
         if (res.ok){
-            const data = await res.json()
+            const data: Message = await res.json()
             console.log(data)
             setMessages(messages => [...messages, data])
 
