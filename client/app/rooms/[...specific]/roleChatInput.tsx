@@ -36,7 +36,7 @@ export default function RoleChatInput({setMessages}: Props){
 
     async function handleSubmit(e: FormEvent){
         e.preventDefault()
-        const regex: RegExp = /\/rooms\/(\d+)\/(.+)/
+        const regex: RegExp = /\/rooms\/(\d+)(?:\/([^/]+))?/
         const match: RegExpMatchArray | null = pathname.match(regex)
         
         let restID: string = ''
@@ -45,8 +45,17 @@ export default function RoleChatInput({setMessages}: Props){
           restID = match[1]
           role = match[2]
         }
+        console.log('here be the goods')
+        console.log(role)
+        console.log(restID)
+        let url: string = ''
+        if (role){
+            url = `${process.env.NEXT_PUBLIC_REACT_APP_API}/messages/${restID}/${role}`
+        } else {
+            url = `${process.env.NEXT_PUBLIC_REACT_APP_API}/messages/${restID}`
+        }
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_REACT_APP_API}/messages/${restID}/${role}`, {
+        const res = await fetch(url, {
             method: "POST",
             cache: 'no-store',
             headers: {

@@ -15,7 +15,7 @@ export default async function Rooms(){
             return <div className="min-h-screen bg-green-300 flex flex-col text-black items-center justify-center ">
                 <h1 className="mx-auto text-3xl">Rooms Page</h1>
                 <div className="flex gap-7 my-8">
-                    <Link href='/rooms/general'>General Room</Link>
+                    <Link href={`/rooms/${userData.restaurant_id}`}>General Room</Link>
                     <Link href={`/rooms/${userData.restaurant_id}/${userData.role.toLowerCase()}`}>{userData.role} Room</Link>
                 </div>
             </div>

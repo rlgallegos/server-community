@@ -1,10 +1,9 @@
 import { redirect } from "next/navigation"
-import RoleChatContainer from "./roleChatContainer"
+import ChatContainer from "@/app/components/chatContainer"
 
-import { Message } from "@/interfaces"
 
 interface Params{
-    specific: Array<Message>
+    specific: string[]
 }
 interface Props{
     params: Params
@@ -18,7 +17,7 @@ export default async function RoleChatRoom({params}: Props){
     })
     if (res.ok){
         const data = await res.json()
-        return <RoleChatContainer roomMessages={data} />
+        return <ChatContainer roomMessages={data} />
     } else {
         redirect('/rooms')
     }

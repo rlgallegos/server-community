@@ -74,6 +74,9 @@ class Restaurants(Resource):
 
 api.add_resource(Restaurants, '/restaurants')
 
+
+# Messages
+
 class MessagesByRole(Resource):
     def get(self, rest_id, role):
         redis_key = f"{rest_id}:{role}"
@@ -83,7 +86,6 @@ class MessagesByRole(Resource):
             return make_response(messages, 200)
         except:
             make_response({"error": "Failed to Load Messages"})
-    
 
     def post(self, rest_id, role):
         data = request.get_json()
@@ -98,6 +100,31 @@ class MessagesByRole(Resource):
 
 
 api.add_resource(MessagesByRole, '/messages/<int:rest_id>/<string:role>')
+
+class MessagesByID(Resource):
+    def get(self, rest_id):
+        redis_key = f"{rest_id}"
+        try:
+            string_messages = redis_client.lrange(redis_key, 0, 49)
+            messages = convert_messages_format(string_messages)
+            return make_response(messages, 200)
+        except:
+            make_response({"error": "Failed to Load Messages"})
+
+    def post(self, rest_id):
+        data = request.get_json()
+        json_data = json.dumps(data)
+        redis_key = f"{rest_id}"
+        try:
+            redis_client.rpush(redis_key, json_data)
+            return make_response(data, 200)
+        except Exception as e:
+            print(e)
+            return make_response({"error": "Failed to Save Message"}, 422)
+
+
+api.add_resource(MessagesByID, '/messages/<int:rest_id>')
+
 
 
 # Next OAuth create / update database
