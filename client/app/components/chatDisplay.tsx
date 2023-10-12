@@ -9,7 +9,7 @@ interface Props{
     messages: Array<Message>
 }
 
-export default function RoleChatDisplay({messages}: Props){
+export default function ChatDisplay({messages}: Props){
 
     const userTailwind = "text-blue-700 text-left"
     const otherUserTailwind = "text-slate-700 text-right"

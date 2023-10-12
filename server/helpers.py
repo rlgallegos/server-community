@@ -66,3 +66,9 @@ def convert_single_message_format(string_message):
     dt_object = datetime.fromtimestamp(json_message['timeStamp'])
     json_message['timeStamp'] = dt_object.strftime("%A %m/%d %I:%M %p")
     return json_message
+
+# Converts one data object returned from POST to match others from GET requests
+def convert_data(data):
+    dt_object = datetime.fromtimestamp(data['timeStamp'])
+    data['timeStamp'] = dt_object.strftime("%A %m/%d %I:%M %p")
+    return data

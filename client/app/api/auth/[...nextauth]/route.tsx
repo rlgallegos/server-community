@@ -10,7 +10,14 @@ export const handler = NextAuth({
     ],
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {
-          return true
+            const res = await fetch(`${process.env.NEXT_PUBLIC_REACT_APP_API}/oauth/update`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(user),
+              });
+              return res.ok
         },
         async redirect({ url, baseUrl }) {
           return baseUrl

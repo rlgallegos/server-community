@@ -31,7 +31,6 @@ with app.app_context():
     # db.session.add_all(restaurants)
     # db.session.commit()
 
-    robert = User.query.filter(User.id == 1).first()
-    robert.imgur_delete_hash = '4QbC71HqeYVcZeY'
-    db.session.add(robert)
+    robert = User.query.filter(User.id == 2).first()
+    db.session.delete(robert)
     db.session.commit()

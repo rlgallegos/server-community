@@ -2,9 +2,6 @@ import Link from "next/link"
 
 import { getServerSession } from "next-auth"
 
-
-
-
 export default async function Rooms(){
     const session = await getServerSession()
 

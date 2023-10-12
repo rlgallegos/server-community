@@ -8,7 +8,7 @@ from flask_restful import Api, Resource
 from models import User, Restaurant
 from config import app, db, redis_client
 from database import update_database_with_oauth
-from helpers import save_to_imgur, convert_messages_format
+from helpers import save_to_imgur, convert_messages_format, convert_data
 
 api = Api(app)
 
@@ -93,7 +93,8 @@ class MessagesByRole(Resource):
         redis_key = f"{rest_id}:{role}"
         try:
             redis_client.rpush(redis_key, json_data)
-            return make_response(data, 200)
+            response_data = convert_data(data)
+            return make_response(response_data, 200)
         except Exception as e:
             print(e)
             return make_response({"error": "Failed to Save Message"}, 422)
@@ -117,7 +118,8 @@ class MessagesByID(Resource):
         redis_key = f"{rest_id}"
         try:
             redis_client.rpush(redis_key, json_data)
-            return make_response(data, 200)
+            response_data = convert_data(data)
+            return make_response(response_data, 200)
         except Exception as e:
             print(e)
             return make_response({"error": "Failed to Save Message"}, 422)

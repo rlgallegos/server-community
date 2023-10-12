@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname } from "next/navigation"
-import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useMemo, useState } from "react"
+import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useState } from "react"
 
 import { Message } from "@/interfaces"
 import { useSession } from "next-auth/react"
@@ -11,7 +11,7 @@ interface Props{
     setMessages: Dispatch<SetStateAction<Array<Message>>>
 }
 
-export default function RoleChatInput({setMessages}: Props){
+export default function ChatInput({setMessages}: Props){
     const pathname = usePathname()
     const {data:session} = useSession()
     const [error, setError] = useState<string>('')
@@ -45,9 +45,6 @@ export default function RoleChatInput({setMessages}: Props){
           restID = match[1]
           role = match[2]
         }
-        console.log('here be the goods')
-        console.log(role)
-        console.log(restID)
         let url: string = ''
         if (role){
             url = `${process.env.NEXT_PUBLIC_REACT_APP_API}/messages/${restID}/${role}`
@@ -65,7 +62,6 @@ export default function RoleChatInput({setMessages}: Props){
         })
         if (res.ok){
             const data: Message = await res.json()
-            console.log(data)
             setMessages(messages => [...messages, data])
 
         } else {
