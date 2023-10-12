@@ -28,7 +28,7 @@ export default function ChatDisplay({messages}: Props){
             // other messages
             return (
                 <li key={uuidv4()} className={otherUserTailwind}>
-                [{message.text}] :{message.user} [{message.timeStamp}]
+                {message.text} :{message.user} [{message.timeStamp}]
                 </li>
             );
             }
