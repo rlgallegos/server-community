@@ -3,7 +3,7 @@ import requests
 import json
 from flask import request, make_response
 from flask_restful import Api, Resource
-
+from sqlalchemy import and_
 
 from models import User, Restaurant
 from config import app, db, redis_client
@@ -15,13 +15,27 @@ api = Api(app)
 # User
 class UsersByRestaurant(Resource):
     def get(self, rest_id):
-        users = User.query.filter(User.rest_id == rest_id).all()
+        users = User.query.filter(User.restaurant_id == rest_id).all()
         if not users:
             return make_response({'error': 'No Users Found'}, 404)
         user_dicts = [user.to_dict() for user in users]
         return make_response(user_dicts, 200)
 
 api.add_resource(UsersByRestaurant, '/users/<int:rest_id>')
+
+class UsersByRole(Resource):
+    def get(self, rest_id, role):
+        users = User.query.filter(
+            User.restaurant_id == rest_id,
+            User.role == role.title()
+        ).all()
+        if not users:
+            return make_response({'error': 'No Users Found'})
+        else:
+            user_dicts = [user.to_dict() for user in users]
+            return make_response(user_dicts, 200)
+        
+api.add_resource(UsersByRole, '/users/<int:rest_id>/<string:role>')
 
 class UserByID(Resource):
     def patch(self, id):

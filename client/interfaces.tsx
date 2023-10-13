@@ -5,7 +5,6 @@ export interface Restaurant {
     id: number,
     name: string
 }
-
 export interface User {
     id: number;
     email: string;
@@ -15,19 +14,20 @@ export interface User {
     restaurant_id: number | null;
     role: string | null;
 }
-  
-export interface AuthState {
-    user: User | null;
-    isAuthenticated: boolean;
-}
-  
 export interface Message {
     text: string,
     user: string,
     timeStamp: number
 }
+  
 
 
+
+
+export interface AuthState {
+    user: User | null;
+    isAuthenticated: boolean;
+}
 export interface LoginAction {
     type: typeof LOGIN;
     payload: User;
