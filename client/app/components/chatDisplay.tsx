@@ -14,12 +14,10 @@ interface Props{
 
 export default function ChatDisplay({messages}: Props){
     const [users, setUsers] = useState<null | User[]>(null)
+    const [highlightedUser, setHighlightedUser] = useState<string>('')
     const [error, setError] = useState<string>('')
     const {data:session} = useSession()
     const pathname = usePathname()
-
-    const userTailwind = "text-blue-700 text-left"
-    const otherUserTailwind = "text-slate-700 text-right"
 
     async function handleShowCoworkers(){
         const regex: RegExp = /\/rooms\/(\d+)(?:\/([^/]+))?/
@@ -44,19 +42,18 @@ export default function ChatDisplay({messages}: Props){
             res.json().then(e => setError(e.error))
         }
     }
-    console.log(users)
     const messageList: ReactElement[] = messages.map((message) => {
         if (session?.user?.name === message.user) {
             // users messages
             return (
-                <li key={uuidv4()} className={userTailwind}>
+                <li key={uuidv4()} className="text-slate-700 text-left">
                 [{message.timeStamp}] {message.user}: {message.text}
                 </li>
             );
             } else {
             // other messages
             return (
-                <li key={uuidv4()} className={otherUserTailwind}>
+                <li key={uuidv4()} className={`text-right ${message.user == highlightedUser ? 'text-blue-700'  : 'text-slate-700'}`}>
                 {message.text} :{message.user} [{message.timeStamp}]
                 </li>
             );
@@ -76,7 +73,7 @@ export default function ChatDisplay({messages}: Props){
                 <div className='w-1/4 flex flex-col'>
 
                     <div className='bg-slate-300 w-full h-full border-2 border-black'>
-                        {users && <ChatDisplayUsersPanel users={users} />}
+                        {users && <ChatDisplayUsersPanel users={users} setHighlightedUser={setHighlightedUser} />}
                     </div>
 
                     {!users && <button onClick={handleShowCoworkers} className='bg-white text-black'>Click Me</button>}
