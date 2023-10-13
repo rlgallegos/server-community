@@ -1,20 +1,26 @@
 'use client'
 import { v4 as uuidv4 } from 'uuid';
 
-import { Message } from '@/interfaces';
+import { Message, User } from '@/interfaces';
 import { useSession } from 'next-auth/react';
-import { ReactElement } from 'react';
+import { MouseEvent, ReactElement, useState } from 'react';
 
 interface Props{
     messages: Array<Message>
 }
 
 export default function ChatDisplay({messages}: Props){
+    const [users, setUsers] = useState<null | User[]>(null)
+    const {data:session} = useSession()
 
     const userTailwind = "text-blue-700 text-left"
     const otherUserTailwind = "text-slate-700 text-right"
 
-    const {data:session} = useSession()
+    function handleShowCoworkers(e: MouseEvent){
+        console.log(e)
+    }
+
+
 
     const messageList: ReactElement[] = messages.map((message) => {
         if (session?.user?.name === message.user) {
@@ -34,13 +40,19 @@ export default function ChatDisplay({messages}: Props){
             }
       });
 
-
     return (
-        <div className="flex flex-col items-center border-4 border-black w-3/4 mx-auto text-center h-full">
+        <div className="w-full flex flex-col items-center border-4 mx-auto text-center h-3/4">
             <h1>Role Chat Display</h1>
-            <ul className='w-full'>
-                {session?.user?.name && messageList}
-            </ul>
+
+            <div className='w-3/4 flex'>
+                <div className='w-full p-4 border-4 border-black'>
+                    <ul className=''>
+                        {session?.user?.name && messageList}
+                    </ul>
+                </div>
+                {!users && <button onClick={handleShowCoworkers} className='bg-white text-black'>Click Me</button>}
+            </div>
+
         </div>
     )
 }

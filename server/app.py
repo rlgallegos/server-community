@@ -13,6 +13,15 @@ from helpers import save_to_imgur, convert_messages_format, convert_data
 api = Api(app)
 
 # User
+class UsersByRestaurant(Resource):
+    def get(self, rest_id):
+        users = User.query.filter(User.rest_id == rest_id).all()
+        if not users:
+            return make_response({'error': 'No Users Found'}, 404)
+        user_dicts = [user.to_dict() for user in users]
+        return make_response(user_dicts, 200)
+
+api.add_resource(UsersByRestaurant, '/users/<int:rest_id>')
 
 class UserByID(Resource):
     def patch(self, id):

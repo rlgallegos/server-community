@@ -72,7 +72,7 @@ export default function ChatInput({setMessages}: Props){
     }
 
     return (
-        <div className="mx-auto">
+        <div className="mx-auto h-1/4">
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <textarea className="p-3" name="" id="" cols={100} rows={4} value={newMessage.text} onChange={handleChange}></textarea>
                 <button className="border border-black w-48" type="submit">Post</button>
