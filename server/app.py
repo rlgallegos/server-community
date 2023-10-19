@@ -5,7 +5,7 @@ from flask import request, make_response
 from flask_restful import Api, Resource
 from sqlalchemy import and_
 
-from models import User, Restaurant
+from models import User, Restaurant, Tip, TipStatistic
 from config import app, db, redis_client
 from database import update_database_with_oauth
 from helpers import save_to_imgur, convert_messages_format, convert_data
@@ -13,6 +13,7 @@ from helpers import save_to_imgur, convert_messages_format, convert_data
 api = Api(app)
 
 # User
+
 class UsersByRestaurant(Resource):
     def get(self, rest_id):
         users = User.query.filter(User.restaurant_id == rest_id).all()
@@ -147,8 +148,51 @@ class MessagesByID(Resource):
             print(e)
             return make_response({"error": "Failed to Save Message"}, 422)
 
-
 api.add_resource(MessagesByID, '/messages/<int:rest_id>')
+
+
+# Tips
+
+class TipsByEmail(Resource):
+    def get(self, email):
+        tips = (
+            User.query
+            .join(Tip, User.id == Tip.user_id)
+            .filter(User.email == email)
+            .with_entities(Tip)
+            .all()
+        )
+        if not tips:
+            return make_response({"error": "No Tips Found"}, 404)
+        else:
+            tip_dicts = [tip.to_dict() for tip in tips]
+            return make_response(tip_dicts, 200)
+
+api.add_resource(TipsByEmail, '/tips/<string:email>')
+
+class TipStatisticsByEmail(Resource):
+    def get(self, email):
+        statistics = (
+            User.query
+            .filter(User.email == email)
+            .join(Restaurant)
+            .join(TipStatistic, Restaurant.id == TipStatistic.restaurant_id)
+            .with_entities(TipStatistic)
+            .all()
+        )
+        if not statistics:
+            return make_response({"error": "No Tip Found"}, 404)
+        else:
+            statistic_dicts = [stat.to_dict() for stat in statistics]
+            return make_response(statistic_dicts, 200)
+
+api.add_resource(TipStatisticsByEmail, '/tipstatistics/<string:email>')
+
+
+
+
+
+
 
 
 

@@ -26,7 +26,7 @@ class Restaurant(db.Model, SerializerMixin):
     name = db.Column(db.String)
 
     users = db.relationship('User', back_populates='restaurant', cascade='all, delete-orphan')
-    statistics = db.relationship('TipStatistics', back_populates='restaurant', cascade='all, delete-orphan')
+    statistics = db.relationship('TipStatistic', back_populates='restaurant', cascade='all, delete-orphan')
 
     serialize_rules = ('-users.restaurant', '-statistics.restaurant')
 
@@ -35,7 +35,6 @@ class Tip(db.Model):
     __tablename__ = 'tips'
 
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.Text)
     tip_date = db.Column(db.Date)
     tip_time = db.Column(db.Time)
     day_night = db.Column(db.String)
@@ -45,7 +44,7 @@ class Tip(db.Model):
     user = db.relationship('User', back_populates='tips')
 
 
-class TipStatistics(db.Model):
+class TipStatistic(db.Model):
     __tablename__ = 'tip_statistics'
 
     id = db.Column(db.Integer, primary_key=True)
