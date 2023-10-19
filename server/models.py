@@ -31,20 +31,21 @@ class Restaurant(db.Model, SerializerMixin):
     serialize_rules = ('-users.restaurant', '-statistics.restaurant')
 
 
-class Tip(db.Model):
+class Tip(db.Model, SerializerMixin):
     __tablename__ = 'tips'
 
     id = db.Column(db.Integer, primary_key=True)
     tip_date = db.Column(db.Date)
     tip_time = db.Column(db.Time)
     day_night = db.Column(db.String)
-    role = db.Column(db.String)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship('User', back_populates='tips')
 
+    serialize_rules = ('-user', '-user_id')
 
-class TipStatistic(db.Model):
+
+class TipStatistic(db.Model, SerializerMixin):
     __tablename__ = 'tip_statistics'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -56,6 +57,8 @@ class TipStatistic(db.Model):
 
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'))
     restaurant = db.relationship('Restaurant', back_populates='statistics')
+
+    serialize_rules = ('-restaurant', '-restaurant_id')
 
     def update_average(self, amount, change = 1):
         self.num_tip += change

@@ -25,6 +25,8 @@ with app.app_context():
     #     "Bakery Bliss",
     #     "Smoothie Oasis",
     # ]
+    Tip.query.delete()
+    TipStatistic.query.delete()
 
 
     # Seed Tips for Users 1 and 2
@@ -34,7 +36,6 @@ with app.app_context():
                 tip_date=date(2023, 10, 18),
                 tip_time=time(12, 0, 0),
                 day_night="Day",
-                role="Some Role",
                 user_id=user_id,
             )
             db.session.add(tip)
@@ -44,7 +45,7 @@ with app.app_context():
         tip_statistic = TipStatistic(
             day_of_week="Monday",
             day_night="Night",
-            role="Some Role",
+            role="Bartender",
             average_tip=50.0,
             num_tips=10,
             restaurant_id=restaurant_id,
@@ -56,7 +57,7 @@ with app.app_context():
         tip_statistic = TipStatistic(
             day_of_week="Tuesday",
             day_night="Day",
-            role="Some Other Role",
+            role="Bartender",
             average_tip=60.0,
             num_tips=15,
             restaurant_id=4,

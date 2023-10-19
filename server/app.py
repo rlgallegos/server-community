@@ -175,13 +175,14 @@ class TipStatisticsByEmail(Resource):
         statistics = (
             User.query
             .filter(User.email == email)
-            .join(Restaurant)
+            .join(Restaurant, Restaurant.id == User.restaurant_id)
             .join(TipStatistic, Restaurant.id == TipStatistic.restaurant_id)
+            .filter(User.role == TipStatistic.role)
             .with_entities(TipStatistic)
             .all()
         )
         if not statistics:
-            return make_response({"error": "No Tip Found"}, 404)
+            return make_response({"error": "No Statistics Found"}, 404)
         else:
             statistic_dicts = [stat.to_dict() for stat in statistics]
             return make_response(statistic_dicts, 200)

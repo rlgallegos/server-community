@@ -19,8 +19,20 @@ export interface Message {
     user: string,
     timeStamp: number
 }
-  
-
+export interface TipStatistic {
+    id: number
+    day_of_week: string,
+    day_night: string,
+    role: string,
+    average_tip: number,
+    num_tips: number,
+}
+export interface Tip {
+    id: number,
+    dat_night: string,
+    tip_date: Date,
+    tip_time: Date,
+}
 
 
 
