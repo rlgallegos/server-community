@@ -19,10 +19,11 @@ export default async function Tips(){
         data = await fetchTipsAndStats(session.user.email)
         console.log(data)
     }
-
-    return (
-        <div className="min-h-screen flex flex-col bg-yellow-100 justify-center">
-            <CalendarContainer />
-        </div>
-    )
+    if (data){
+        return (
+            <div className="min-h-screen flex flex-col bg-yellow-100 justify-center">
+                <CalendarContainer tips={data.tips} statistics={data.statistics} />
+            </div>
+        )
+    }
 }

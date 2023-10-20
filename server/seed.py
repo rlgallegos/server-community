@@ -33,8 +33,8 @@ with app.app_context():
     for user_id in [1, 2]:
         for i in range(5):  # Add 5 tips for each user
             tip = Tip(
-                tip_date=date(2023, 10, 18),
-                tip_time=time(12, 0, 0),
+                tip_date=date(2023, 10, 18 - i),
+                tip_amount=100 * i,
                 day_night="Day",
                 user_id=user_id,
             )

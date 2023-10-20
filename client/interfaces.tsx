@@ -29,9 +29,9 @@ export interface TipStatistic {
 }
 export interface Tip {
     id: number,
-    dat_night: string,
+    tip_amount: number,
+    day_night: string,
     tip_date: Date,
-    tip_time: Date,
 }
 
 
