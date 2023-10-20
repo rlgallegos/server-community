@@ -1,8 +1,10 @@
 
 import { getServerSession } from "next-auth"
 
-import { FetchTipsAndStats } from "../services/fetches"
+import { fetchTipsAndStats } from "../services/fetches"
 import { Tip, TipStatistic } from "@/interfaces"
+
+import CalendarContainer from "./calendarContainer"
 
 interface Data {
     tips: Tip[],
@@ -14,11 +16,13 @@ export default async function Tips(){
 
     let data: null | Data = null
     if (session?.user?.email) {
-        data = await FetchTipsAndStats(session.user.email)
+        data = await fetchTipsAndStats(session.user.email)
         console.log(data)
     }
 
     return (
-        <div>The Tip Page</div>
+        <div className="min-h-screen flex flex-col bg-yellow-100 justify-center">
+            <CalendarContainer />
+        </div>
     )
 }

@@ -8,7 +8,7 @@ export default async function Home() {
         if (userResponse.ok){
             const userData = await userResponse.json()
             return (
-                <div className='min-h-screen flex flex-col bg-slate-300'>
+                <div>
                     <Homepage user={userData} />
                 </div>
             )

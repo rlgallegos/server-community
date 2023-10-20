@@ -1,7 +1,7 @@
 
 
 
-async function FetchTipsAndStats(email: string){
+async function fetchTipsAndStats(email: string){
     const [tipsResponse, statisticsResponse] = await Promise.all([
         fetch(`${process.env.NEXT_PUBLIC_REACT_APP_API}/tips/${email}`),
         fetch(`${process.env.NEXT_PUBLIC_REACT_APP_API}/tipstatistics/${email}`),
@@ -19,4 +19,4 @@ async function FetchTipsAndStats(email: string){
         throw new Error('Failed to Retrieve Data')
       }
 }
-export {FetchTipsAndStats}
+export {fetchTipsAndStats}
