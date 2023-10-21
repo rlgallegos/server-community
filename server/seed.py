@@ -30,11 +30,12 @@ with app.app_context():
 
 
     # Seed Tips for Users 1 and 2
+    tips = [400, 375, 390, 410, 425, 430, 440]
     for user_id in [1, 2]:
         for i in range(5):  # Add 5 tips for each user
             tip = Tip(
                 tip_date=date(2023, 10, 18 - i),
-                tip_amount=100 * i,
+                tip_amount=tips[i],
                 day_night="Day",
                 user_id=user_id,
             )
@@ -53,13 +54,15 @@ with app.app_context():
         db.session.add(tip_statistic)
 
     # Seed additional TipStatistics for Restaurant 4
-    for i in range(3):  # Add 3 more tip statistics for Restaurant 4
+    days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    averages = [159.24, 184.56, 198.12, 222.67, 238.78, 257.23, 284.67]
+    for i in range(7):  # Add 3 more tip statistics for Restaurant 4
         tip_statistic = TipStatistic(
-            day_of_week="Tuesday",
+            day_of_week=days[i],
             day_night="Day",
             role="Bartender",
-            average_tip=60.0,
-            num_tips=15,
+            average_tip=averages[i],
+            num_tips=i * 4,
             restaurant_id=4,
         )
         db.session.add(tip_statistic)
