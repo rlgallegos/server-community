@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth"
 import { fetchTipsAndStats } from "../services/fetches"
 import { Tip, TipStatistic } from "@/interfaces"
 
-import CalendarContainer from "./calendarContainer"
+import TipsContainer from "./TipsContainer"
 
 interface Data {
     tips: Tip[],
@@ -22,7 +22,7 @@ export default async function Tips(){
     if (data){
         return (
             <div className="min-h-screen flex flex-col bg-yellow-100 justify-center">
-                <CalendarContainer tips={data.tips} statistics={data.statistics} />
+                <TipsContainer tips={data.tips} statistics={data.statistics} />
             </div>
         )
     }

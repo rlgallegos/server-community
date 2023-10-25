@@ -72,3 +72,86 @@ def convert_data(data):
     dt_object = datetime.fromtimestamp(data['timeStamp'])
     data['timeStamp'] = dt_object.strftime("%A %m/%d %I:%M %p")
     return data
+
+
+# ChatGPT Data Converstion Functions
+
+def convert_restaurant_statistics(original_data):
+    # Initialize an empty dictionary to store the transformed data
+    data = {}
+
+    # Loop through the original data and populate the 'data' dictionary
+    for item in original_data:
+        day = item['day_of_week']
+        day_night = item['day_night']
+        average_tip = item['average_tip']
+        
+        # Create the day entry if it doesn't exist
+        if day not in data:
+            data[day] = {}
+        
+        # Populate the 'data' dictionary
+        data[day][day_night] = average_tip
+
+    return data
+
+def convert_tips_to_averages(original_data):
+    shift_times = ['Day', 'Night']
+    days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+    # Initialize an empty dictionary
+    data = {}
+
+    # Loop through each day of the week and each shift
+    for day in days:
+        for shift in shift_times:
+            # Initialize daily data for each shift
+            data[day] = data.get(day, {})
+            data[day][shift] = []
+    # print()
+    # print('data before filling', data)
+
+    # Fill in the data dictionary
+    for item in original_data:
+        day = item['day_of_week']
+        shift = item['day_night']
+        tip_amount = item['tip_amount']
+        data[day][shift].append(tip_amount)
+    # print()
+    # print('data after filling it in', data)
+
+    # Calculate averages
+    averages = {}
+    for day, shifts in data.items():
+        averages[day] = {}
+        for shift, tips in shifts.items():
+            if tips:  # Check if there are tips for the shift
+                avg = sum(tips) / len(tips)
+                averages[day][shift] = avg
+            else:
+                averages[day][shift] = None 
+    # print()
+    # print('averages, what is returned', averages)
+
+    return averages
+
+def get_shift_counts(original_data):
+    shift_times = ['Day', 'Night']
+    days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+    # Initialize an empty dictionary
+    data = {}
+
+    # Loop through each day of the week and each shift
+    for day in days:
+        for shift in shift_times:
+            # Initialize daily data for each shift
+            data[day] = data.get(day, {})
+            data[day][shift] = 0
+        
+    for item in original_data:
+        day = item['day_of_week']
+        shift = item['day_night']
+        data[day][shift] += 1
+
+    return data

@@ -37,6 +37,7 @@ class Tip(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     tip_date = db.Column(db.Date)
     tip_amount = db.Column(db.Integer)
+    day_of_week=db.Column(db.String)
     day_night = db.Column(db.String)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))

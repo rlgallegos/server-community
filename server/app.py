@@ -1,16 +1,22 @@
 import os
+import openai
 import requests
 import json
 from flask import request, make_response
 from flask_restful import Api, Resource
 from sqlalchemy import and_
+from dotenv import load_dotenv
 
 from models import User, Restaurant, Tip, TipStatistic
 from config import app, db, redis_client
 from database import update_database_with_oauth
-from helpers import save_to_imgur, convert_messages_format, convert_data
+from helpers import save_to_imgur, convert_messages_format, convert_data, convert_restaurant_statistics, convert_tips_to_averages, get_shift_counts
+from chat import should_user_drop_shifts, should_user_get_shifts, where_is_user_below_average
 
 api = Api(app)
+
+load_dotenv()
+
 
 # User
 
@@ -188,6 +194,76 @@ class TipStatisticsByEmail(Resource):
             return make_response(statistic_dicts, 200)
 
 api.add_resource(TipStatisticsByEmail, '/tipstatistics/<string:email>')
+
+
+# Chat GPT
+@app.route('/suggestion/<string:email>')
+def get_suggestion(email):
+    if request.method == 'GET':
+        user_obj = User.query.filter(User.email == email).first()
+        user = user_obj.to_dict(rules=('-restaurant.users', '-image', '-imgur_delete_hash'))
+        
+        # print(user)
+
+        openai.api_key = os.environ.get("OPENAI_API_KEY")
+
+        tips = user.get('tips', [])
+        rest_stats = user.get('restaurant', {}).get('statistics', [])
+
+        shift_counts = get_shift_counts(tips)
+        formatted_stats = convert_restaurant_statistics(rest_stats)
+        formatted_tip_averages = convert_tips_to_averages(tips)
+
+        drop_shift_response = should_user_drop_shifts(shift_counts, formatted_stats)
+        print(drop_shift_response)
+
+        get_shift_response = should_user_get_shifts(shift_counts, formatted_stats)
+        print(get_shift_response)
+
+        below_average_response = where_is_user_below_average(formatted_tip_averages, formatted_stats)
+
+
+
+
+        # print()
+        # print('the average tips for all employees for a given shift by day and shift')
+        # print(formatted_stats)
+        # print()
+        # print('the average tips for this emplooyee for a given shift by day and shift')
+        # print(formatted_tip_averages)
+        # print()
+
+        message = ''
+        # try:
+        #     completion = openai.ChatCompletion.create(
+        #     model="gpt-3.5-turbo",
+        # messages = [
+        #     {
+        #         "role": "system",
+        #         "content": "The average tips for all employees for a given shift by day and shift:\n{}".format(formatted_stats)
+        #     },
+        #     {
+        #         "role": "system",
+        #         "content": "The average tips for this employee for a given shift by day and shift:\n{}".format(formatted_tip_averages)
+        #     },
+        #     {
+        #         "role": "system",
+        #         "content": "You are a financial expert who is friendly and engaging. Here are three suggestions for increasing your earnings at work based on your historical tip data and the average tips for each day and shift:"
+        #     },
+        #     {
+        #         "role": "user",
+        #         "content": "Generate at most three specific and actionable strategies for the user to increase their earnings. Consider the user's historical tip data and the average tips for each day and shift. Do not make any suggestion about their service / sales / or guests. Provide concrete examples and tips tailored to the user's work schedule and job role."
+        #     }
+        # ]
+        #     )
+        #     message = completion.choices[0].message.content
+        #     print(completion.choices[0].message.content)
+        # except Exception as e:
+        #     print("The ERROR:", e)
+        #     message = e
+
+
+        return make_response({'response': message}, 200)
 
 
 

@@ -15,7 +15,6 @@ export default function CalendarContainer({tips, statistics}: Props){
     const [dayNight, setDayNight] = useState<null | string>(null)
     const [avgTips, setAvgTips] = useState<undefined | null | number>(null)
     const [dayOfWeek, setDayOfWeek] = useState<string>('')
-    // const [userDate, setUserDate] = useState<string>('')
 
     useEffect(() => {
         if (date && dayNight && dayOfWeek) {
@@ -33,7 +32,6 @@ export default function CalendarContainer({tips, statistics}: Props){
         const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
         setDayOfWeek(daysOfWeek[value.getUTCDay()])
 
-
         // Formatting the Date for DB purposes
         const year = value.getFullYear()
         const month = String(value.getMonth() + 1).padStart(2, '0')
@@ -46,33 +44,27 @@ export default function CalendarContainer({tips, statistics}: Props){
     }
 
     return (
-        <div className="flex flex-col items-center justify-center bg-slate-200 w-1/2 mx-auto">
-
-            {/* Date */}
-            <div className="w-1/2 mx-auto bg-slate-100">
+        <div className="flex flex-col justify-center w-[700px] mx-auto">
+            <div className="flex w-full bg-red-600">
                 <Calendar
                 onClickDay={handleClickDay}
-                className='react-calendar'
+                className='react-calendar mx-auto w-1/2'
                 minDetail="month"
                 maxDetail="month"
                 maxDate={today}
                 showNeighboringMonth={false}
                 />
-            </div>
-
-            {/* Time */}
-            {date && <div className="flex justify-evenly gap-0 border border-black w-1/2 text-center cursor-pointer">
-                <button className={`w-1/2 hover:bg-yellow-300 ${dayNight == 'Day' && 'bg-yellow-300'}`} onClick={handleSetDayNight}>Day</button>
-                <button className={`w-1/2 hover:bg-violet-300 ${dayNight == 'Night' && 'bg-violet-300'}`} onClick={handleSetDayNight}>Night</button>
-            </div>}
-
-            {/* Result */}
-            <div className="w-2/3 bg-slate-50 text-center">
-                {tip && <div className="">
-                    <h3>${tip.tip_amount}</h3>
-                    <h4>{tip.day_night}</h4>
-                    <h4>Average For Shift: {avgTips}</h4>
-                </div>}
+                <div className="w-1/2 bg-blue-500 text-center">
+                    {date && <div className="flex bg-white justify-evenly gap-0 border border-black w-[350px] text-center cursor-pointer">
+                        <button className={`w-full h-full hover:bg-yellow-300 ${dayNight == 'Day' && 'bg-yellow-300'}`} onClick={handleSetDayNight}>Day</button>
+                        <button className={`w-full hover:bg-violet-300 ${dayNight == 'Night' && 'bg-violet-300'}`} onClick={handleSetDayNight}>Night</button>
+                    </div>}
+                    {tip && <div className="h-1/2 flex flex-col justify-center">
+                        <h3>${tip.tip_amount}</h3>
+                        <h4>{tip.day_night}</h4>
+                        <h4>Average For Shift: {avgTips}</h4>
+                    </div>}
+                </div>
             </div>
         </div>
     )
