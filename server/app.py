@@ -11,7 +11,7 @@ from models import User, Restaurant, Tip, TipStatistic
 from config import app, db, redis_client
 from database import update_database_with_oauth
 from helpers import save_to_imgur, convert_messages_format, convert_data, convert_restaurant_statistics, convert_tips_to_averages, get_shift_counts
-from chat import should_user_drop_shifts, should_user_get_shifts, where_is_user_below_average
+from chat import should_user_drop_shifts, should_user_get_shifts, where_is_user_below_or_above_average
 
 api = Api(app)
 
@@ -206,6 +206,16 @@ def get_suggestion(email):
         # print(user)
 
         openai.api_key = os.environ.get("OPENAI_API_KEY")
+        messages = [
+            {
+                "role": "system",
+                "content": "You are a financial expert who is friendly, engaging, and informative."
+            },
+            {
+                "role": "user",
+                "content": "Please provide for me information regarding my tips and shifts. First, which shifts should I drop? Second, what shifts do I not work that I should pick up? Lastly, where are my earnings below and above and by how much?"
+            }
+        ]
 
         tips = user.get('tips', [])
         rest_stats = user.get('restaurant', {}).get('statistics', [])
@@ -215,16 +225,33 @@ def get_suggestion(email):
         formatted_tip_averages = convert_tips_to_averages(tips)
 
         drop_shift_response = should_user_drop_shifts(shift_counts, formatted_stats)
-        print(drop_shift_response)
-
         get_shift_response = should_user_get_shifts(shift_counts, formatted_stats)
-        print(get_shift_response)
+        below_average_response, above_average_response = where_is_user_below_or_above_average(formatted_tip_averages, formatted_stats)
+        
+        # print()
+        # print('shifts to drop')
+        # print(drop_shift_response)
+        # print()
 
-        below_average_response = where_is_user_below_average(formatted_tip_averages, formatted_stats)
+        # print('shifts to pick up')
+        # print(get_shift_response)
+        # print()
+
+        # print('shifts below average')
+        # print(below_average_response)
+        # print('shifts above average')
+        # print(above_average_response)
+        # print()
 
 
 
-
+        messages.append(get_shift_response)
+        for message in below_average_response:
+            messages.append(message)
+        for message in above_average_response:
+            messages.append(message)
+        messages.append(drop_shift_response)
+        print('messages', messages)
         # print()
         # print('the average tips for all employees for a given shift by day and shift')
         # print(formatted_stats)
@@ -233,37 +260,20 @@ def get_suggestion(email):
         # print(formatted_tip_averages)
         # print()
 
-        message = ''
-        # try:
-        #     completion = openai.ChatCompletion.create(
-        #     model="gpt-3.5-turbo",
-        # messages = [
-        #     {
-        #         "role": "system",
-        #         "content": "The average tips for all employees for a given shift by day and shift:\n{}".format(formatted_stats)
-        #     },
-        #     {
-        #         "role": "system",
-        #         "content": "The average tips for this employee for a given shift by day and shift:\n{}".format(formatted_tip_averages)
-        #     },
-        #     {
-        #         "role": "system",
-        #         "content": "You are a financial expert who is friendly and engaging. Here are three suggestions for increasing your earnings at work based on your historical tip data and the average tips for each day and shift:"
-        #     },
-        #     {
-        #         "role": "user",
-        #         "content": "Generate at most three specific and actionable strategies for the user to increase their earnings. Consider the user's historical tip data and the average tips for each day and shift. Do not make any suggestion about their service / sales / or guests. Provide concrete examples and tips tailored to the user's work schedule and job role."
-        #     }
-        # ]
-        #     )
-        #     message = completion.choices[0].message.content
-        #     print(completion.choices[0].message.content)
-        # except Exception as e:
-        #     print("The ERROR:", e)
-        #     message = e
+        response = ''
+        try:
+            completion = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages = messages
+            )
+            response = completion.choices[0].message.content
+            print(completion.choices[0].message.content)
+        except Exception as e:
+            print("The ERROR:", e)
+            response = e
 
-
-        return make_response({'response': message}, 200)
+        print('response', response)
+        return make_response({'response': response}, 200)
 
 
 

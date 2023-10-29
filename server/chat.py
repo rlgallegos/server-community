@@ -17,7 +17,7 @@ def should_user_drop_shifts(shift_counts, rest_stats):
         return(
         {
             "role": "system",
-            "content": "These are the shifts that the user works that are amongst the top 5 worst shifts: {}".format(user_worst_shifts)
+            "content": "These are the shifts that the user works that are amongst the top 5 worst shifts: {}. It would be advisable for the user to drop or trade these shifts.".format(user_worst_shifts)
         }
         )
 
@@ -33,12 +33,12 @@ def should_user_get_shifts(shift_counts, rest_stats):
         return(
         {
             "role": "system",
-            "content": "These are the shifts that the user does not work and what the average for an employee to make on that shift is but should that are amongst the top 5 best shifts: {}".format(missing_best_shifts)
+            "content": "These are the shifts that the user does not work and what the average for an employee to make on that shift is but should that are amongst the top 5 best shifts: {}. It would be advisable for the user to try to pick up / trade for these shifts.".format(missing_best_shifts)
         }
         )
 
 
-def where_is_user_below_average(tip_averages, rest_averages):
+def where_is_user_below_or_above_average(tip_averages, rest_averages):
     shift_times = ['Day', 'Night']
     days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
@@ -49,24 +49,35 @@ def where_is_user_below_average(tip_averages, rest_averages):
             tip_avg, rest_avg = tip_averages[day][shift], rest_averages[day][shift]
             if not tip_avg or not rest_avg:
                 continue
+            percentage_difference = (tip_avg - rest_avg) / rest_avg 
+            percentage_difference = "{:.0%}".format(abs(percentage_difference))
             if tip_avg > rest_avg * 1.25:
-                shifts_above_average.append((day, shift, tip_avg, rest_avg))
+                shifts_above_average.append((day, shift, tip_avg, rest_avg, percentage_difference))
             elif tip_avg < rest_avg * 0.75:
-                shifts_below_average.append((day, shift, tip_avg, rest_avg))
-    print()
-    print('tip averages for a user')
-    print(tip_averages)
-    print()
-    print('tip averages for the restaurant')
-    print(rest_averages)
-    print()
-    print('shifts above average')
-    print(shifts_above_average)
-    print()
-    print('shifts below average')
-    print(shifts_below_average)
-    print()
-    return None
+                shifts_below_average.append((day, shift, tip_avg, rest_avg, percentage_difference))
+
+
+    below_messages = []
+    above_messages = []
+
+    for day, shift, tip_avg, rest_avg, percentage in shifts_above_average:
+        message = {
+            "role": "system",
+            "content": "The user's {} shift on {} has an average of ${}, which is {} above the restaurant's average for that shift: ${}. Congradulate the user.".format(
+                shift, day, tip_avg, percentage, rest_avg
+            )
+        }
+        above_messages.append(message)
+    for day, shift, tip_avg, rest_avg, percentage in shifts_below_average:
+        message = {
+            "role": "system",
+            "content": "The user's {} shift on {} has an average of ${}, which is {} below the restaurant's average for that shift: ${}. Encourage the user.".format(
+                shift, day, tip_avg, percentage, rest_avg
+            )
+        }
+        below_messages.append(message)
+    return (below_messages, above_messages)
+
 
 
 
@@ -76,12 +87,6 @@ def where_is_user_below_average(tip_averages, rest_averages):
 # Avoid overloading on low-earning shifts.
 
 # Shift Swapping: Explore opportunities for shift swaps with colleagues to potentially work on more lucrative shifts.
-
-# Seasonal Adaptation: Be aware of seasonal variations that might affect customer traffic and 
-# adapt your schedule accordingly to align with busier periods.
-
-# Maximize Peak Hours: Pay special attention to peak hours during shifts, as 
-# performance during these times can significantly impact your earnings.
 
 # Performance Consistency: Strive for consistent performance across all shifts by maintaining high service quality 
 # and attentiveness.
