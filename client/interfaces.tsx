@@ -34,6 +34,19 @@ export interface Tip {
     tip_date: Date,
 }
 
+export interface Provider {
+    id: string,
+    name: string,
+    type: string,
+    signinUrl: string,
+    callbackUrl: string
+}
+
+
+
+
+
+
 
 
 export interface AuthState {

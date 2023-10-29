@@ -5,7 +5,7 @@ import { User } from "@/interfaces"
 export default function HomeLoggedIn({userData}: {userData : User | null}){
     if (userData){
         return (
-            <div className="min-h-screen flex flex-col bg-slate-300">
+            <div className="bg-primary min-h-screen flex flex-col">
                 <h1>Hello {userData.name}!</h1>
             </div>
         )

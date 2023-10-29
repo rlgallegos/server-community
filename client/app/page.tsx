@@ -8,9 +8,7 @@ export default async function Home() {
         if (userResponse.ok){
             const userData = await userResponse.json()
             return (
-                <div>
-                    <Homepage user={userData} />
-                </div>
+                <Homepage user={userData} />
             )
         }
     } else {

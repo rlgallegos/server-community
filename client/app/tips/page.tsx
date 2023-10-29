@@ -17,7 +17,6 @@ export default async function Tips(){
     let data: null | Data = null
     if (session?.user?.email) {
         data = await fetchTipsAndStats(session.user.email)
-        console.log(data)
     }
     if (data){
         return (
