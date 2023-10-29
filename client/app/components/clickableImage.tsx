@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, ChangeEvent } from 'react';
+import { useRef, ChangeEvent } from 'react';
 import Image from 'next/image';
 
 interface Props{
@@ -29,7 +29,7 @@ export default function ClickableImage({src, alt, height, width, callback}: Prop
   
 
     return (
-        <div>
+        <div className='border border-accent'>
             <Image
             className='cursor-pointer'
             src={src}

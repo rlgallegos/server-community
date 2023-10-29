@@ -29,6 +29,10 @@ export default function AddRestaurantForm({restaurantData, userData, setUserData
     }
     function handleLinkRestaurant(e: FormEvent){
         e.preventDefault()
+        if (!selectedRestaurant || !role){
+            setError('Please Select A Restaurant and Role.')
+            return
+        }
         const request = {
             'restaurant_id' : selectedRestaurant,
             'role': role
@@ -50,7 +54,7 @@ export default function AddRestaurantForm({restaurantData, userData, setUserData
     }
 
     return (
-        <div className="">
+        <div className="bg-secondary p-6">
             <form className='flex flex-col gap-4' onSubmit={handleLinkRestaurant}>
                 <div className='flex gap-4'>
                     <select value={selectedRestaurant} onChange={handleSelectRest}>
@@ -64,7 +68,7 @@ export default function AddRestaurantForm({restaurantData, userData, setUserData
                         <option value="Busser">Busser</option>
                     </select>
                 </div>
-                <button type='submit' className='bg-white border border-black rounded-md'>Link Restaurant</button>
+                <button type='submit' className='bg-accent border border-black rounded-md'>Link Restaurant</button>
             </form>
             {error && <p>{error}</p>}
         </div>

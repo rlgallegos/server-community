@@ -31,14 +31,16 @@ export default function UserProfile({user, restaurantData}: Props){
         }
     }
 
-    return <div>
-        <div className='w-full mx-auto flex flex-col items-center justify-center'>
+    return <div className="min-h-screen bg-primary flex flex-colr">
+        <div className='w-full mx-auto flex flex-col items-center justify-evenly'>
             <ClickableImage src={userData.image} alt='user' height={300} width={300} callback={handleUpdateImage} />
             {error && <p>{error}</p>}
-            <h1>{userData.name}</h1>
-            <h3>Email: {userData.email}</h3>
-            <h3>Restaurant: {userData.restaurant ? userData.restaurant.name : 'None Selected'}</h3>
-            <h3>Job: {userData.role ? userData.role : 'None Selected'}</h3>
+            <div className="flex flex-col gap-1">
+                <h1>{userData.name}</h1>
+                <h3>Email: {userData.email}</h3>
+                <h3>Restaurant: {userData.restaurant ? userData.restaurant.name : 'None Selected'}</h3>
+                <h3>Job: {userData.role ? userData.role : 'None Selected'}</h3>
+            </div>
             <AddRestaurantForm userData={userData} setUserData={setUserData} restaurantData={restaurantData} />
         </div>
     </div>
