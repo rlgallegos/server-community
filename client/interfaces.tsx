@@ -42,7 +42,9 @@ export interface Provider {
     callbackUrl: string
 }
 
-
+export interface Providers {
+    [key:string]: Provider
+}
 
 
 
