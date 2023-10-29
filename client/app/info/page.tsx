@@ -8,10 +8,7 @@ export default async function Page() {
 
     if (session?.user?.email){
         return (
-            <div className="min-h-screen bg-blue-300">
-                <h1>The Info Page</h1>
-                <InfoContainer email={session.user.email} />
-            </div>
+            <InfoContainer email={session.user.email} />
         )
     }
 }

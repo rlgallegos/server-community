@@ -1,12 +1,18 @@
 'use client'
-import { getProviders, signIn } from "next-auth/react";
+import { getProviders, signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { Providers } from "@/interfaces";
+import { redirect } from "next/navigation";
 
 
 export default function signin() {
     const [providers, setProviders] = useState<Providers | null>(null)
+
+    const {data: session} = useSession()
+    if (session){
+        return redirect('/')
+    }
 
     useEffect(() => {
         const fetchProviders = async () => {
@@ -20,17 +26,19 @@ export default function signin() {
     if (providers){
         providerList = Object.keys(providers).map(provider => {
             return (
-                <div key={provider}>
-                    <h3>{providers[provider].name}</h3>
-                    <button onClick={() => signIn(providers[provider].id)}>{providers[provider].name}</button>
+                <div key={provider} className="flex gap-4 items-center justify-center">
+                    {/* <h4>{providers[provider].name}</h4> */}
+                    <button className="px-4 py-2 bg-accent"
+                    onClick={() => signIn(providers[provider].id)}>{providers[provider].name}</button>
                 </div>
             )
         })
     }
 
     return (
-        <div className="min-h-screen bg-primary">
-            <ul>
+        <div className="min-h-screen bg-primary flex flex-col justify-center items-center">
+            <h2 className="mb-6 text-xl">Choose Provider To Login With:</h2>
+            <ul className="flex flex-col gap-4">
                 {providerList && providerList}
             </ul>
         </div>

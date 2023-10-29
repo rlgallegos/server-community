@@ -260,19 +260,33 @@ def get_suggestion(email):
         # print(formatted_tip_averages)
         # print()
 
+
         response = ''
-        try:
-            completion = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages = messages
-            )
-            response = completion.choices[0].message.content
-            print(completion.choices[0].message.content)
-        except Exception as e:
-            print("The ERROR:", e)
-            response = e
+
+        # try:
+        #     completion = openai.ChatCompletion.create(
+        #     model="gpt-3.5-turbo",
+        #     messages = messages
+        #     )
+        #     response = completion.choices[0].message.content
+        #     print(completion.choices[0].message.content)
+        # except Exception as e:
+        #     print("The ERROR:", e)
+        #     response = e
 
         print('response', response)
+
+        # Response for Testing
+        response = """
+        This is the first paragraph. It contains some text and serves as an example. It's quite a bit longer than before, providing more content for demonstration purposes. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+
+        Here is the second paragraph. It's separated from the first one by two newline characters. This paragraph is also longer and provides more text for illustration. Nullam mollis. The quick brown fox jumps over the lazy dog. Aliquam et nunc. Quisque sit amet dui. Nulla nec leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam pharetra leo a ligula. Donec mattis libero eget urna. Integer vulputate sem a nibh rutrum consequat.
+
+        And now, the third paragraph. It's distinct from the previous two thanks to the line breaks. This paragraph continues the trend of being longer and offers additional content for the purpose of the example. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem.
+
+        In Python, you can create multi-paragraph strings by enclosing them in triple quotes.
+        """
+
         return make_response({'response': response}, 200)
 
 
