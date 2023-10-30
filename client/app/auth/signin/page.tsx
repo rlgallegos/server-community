@@ -27,7 +27,6 @@ export default function signin() {
         providerList = Object.keys(providers).map(provider => {
             return (
                 <div key={provider} className="flex gap-4 items-center justify-center">
-                    {/* <h4>{providers[provider].name}</h4> */}
                     <button className="px-4 py-2 bg-accent"
                     onClick={() => signIn(providers[provider].id)}>{providers[provider].name}</button>
                 </div>
@@ -37,10 +36,14 @@ export default function signin() {
 
     return (
         <div className="min-h-screen bg-primary flex flex-col justify-center items-center">
-            <h2 className="mb-6 text-xl">Choose Provider To Login With:</h2>
-            <ul className="flex flex-col gap-4">
-                {providerList && providerList}
-            </ul>
+            <div className="p-2 border border-accent">
+                <div className="bg-secondary p-4">
+                    <h2 className="mb-6 text-xl">Choose Provider To Login With:</h2>
+                    <ul className="flex flex-col gap-4">
+                        {providerList && providerList}
+                    </ul>
+                </div>
+            </div>
         </div>
     )
 }

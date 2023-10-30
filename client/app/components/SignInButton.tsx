@@ -12,7 +12,7 @@ export default function SignInButton(){
         )
     } else {
         return (
-            <div className="w-24 h-8 rounded-md bg-white flex items-center justify-center border border-black">
+            <div className="w-24 h-8 bg-accent flex items-center justify-center">
                 <button onClick={() => signIn()}>Sign In</button>
             </div>
         )

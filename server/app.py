@@ -195,6 +195,24 @@ class TipStatisticsByEmail(Resource):
 
 api.add_resource(TipStatisticsByEmail, '/tipstatistics/<string:email>')
 
+class TipByID(Resource):
+    def patch(self, id):
+        new_tip = int(request.get_json())
+        print(new_tip)
+        tip = Tip.query.filter(Tip.id == id).first()
+        if not tip:
+            return make_response({'error': "Tip Not Found"}, 404)
+        try:
+            tip.tip_amount = new_tip
+            db.session.add(tip)
+            db.session.commit()
+        except Error as e:
+            return make_response({'error': e}, 500)
+        return make_response(tip.to_dict(), 200)
+
+
+api.add_resource(TipByID, '/tip/<int:id>')
+
 
 # Chat GPT
 @app.route('/suggestion/<string:email>')

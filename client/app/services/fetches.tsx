@@ -1,5 +1,5 @@
 
-
+const API_URL = process.env.NEXT_PUBLIC_REACT_APP_API
 
 async function fetchTipsAndStats(email: string){
     const [tipsResponse, statisticsResponse] = await Promise.all([
@@ -19,4 +19,22 @@ async function fetchTipsAndStats(email: string){
         throw new Error('Failed to Retrieve Data')
       }
 }
-export {fetchTipsAndStats}
+
+async function fetchEditTips(id: number, tip: string){
+    const res = await fetch(`${API_URL}/tip/${id}`, {
+        method: "PATCH",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: tip
+    })
+    if (res.ok){
+        const data = await res.json()
+        return data
+    } else {
+        throw new Error('Failed to Update Tip')
+    }
+}
+
+
+export {fetchTipsAndStats, fetchEditTips}

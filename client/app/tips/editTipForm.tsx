@@ -1,14 +1,37 @@
+'use client'
 
+import { Tip } from "@/interfaces"
+import { ChangeEvent, FormEvent, useState, Dispatch, SetStateAction } from "react"
+import { fetchEditTips } from "../services/fetches"
 
+interface Props {
+    tip: Tip | undefined | null
+    setTip: Dispatch<SetStateAction<Tip | null | undefined>>
+}
 
+export default function EditTipForm({tip, setTip}: Props){
+    const [newTip, setNewTip] = useState<string>('')
 
-export default function EditTipForm(){
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setNewTip(e.target.value)
+    }
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault()
+        if (tip?.id){
+            const updatedTip: Tip = await fetchEditTips(tip.id, newTip)
+            setTip(updatedTip)
+        }
+    }
+
+    console.log(newTip)
+
     return (
         <div className="w-[700px] mx-auto border border-accent bg-secondary">
 
-            <form className="flex justify-evenly gap-6 py-4">
-                <input className="bg-accent px-2" type="text" />
-                <button type="submit" className="bg-accent hover:bg-slate-100 px-4 py-2 border border-black">Edit Tip</button>
+            <form onSubmit={handleSubmit} className="flex justify-evenly gap-6 py-4">
+                <input className="bg-accent px-2" type="number" value={newTip} onChange={handleChange} />
+                <button type="submit" className="bg-accent hover:bg-slate-100 px-4 py-2 border border-black"
+                >Edit Tip</button>
             </form>
 
         </div>

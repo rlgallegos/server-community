@@ -1,17 +1,18 @@
 'use client'
 
-import { useEffect, useState, MouseEvent } from "react"
+import { useEffect, useState, MouseEvent, SetStateAction, Dispatch } from "react"
 import Calendar, { OnClickFunc } from "react-calendar"
 import { Tip, TipStatistic } from "@/interfaces"
 
 interface Props{
     tips: Tip[]
     statistics: TipStatistic[]
+    tip: Tip | undefined | null
+    setTip: Dispatch<SetStateAction<Tip | null | undefined>>
 }
 
-export default function CalendarContainer({tips, statistics}: Props){
+export default function CalendarContainer({tips, statistics, tip, setTip}: Props){
     const [date, setDate] = useState<null | string>(null)
-    const [tip, setTip] = useState<undefined | null | Tip>(null)
     const [dayNight, setDayNight] = useState<null | string>(null)
     const [avgTips, setAvgTips] = useState<undefined | null | number>(null)
     const [dayOfWeek, setDayOfWeek] = useState<string>('')
