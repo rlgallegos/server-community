@@ -1,5 +1,4 @@
 import ChatContainer from "@/app/components/chatContainer"
-import { Message } from "@/interfaces"
 import { redirect } from "next/navigation"
 
 interface Params{
@@ -17,12 +16,8 @@ export default async function GeneralChatRoom({params}: Props){
     })
     if (res.ok){
         const data = await res.json()
-        return <ChatContainer roomMessages={data} />
+        return <ChatContainer roomMessages={data} type='general' />
     } else {
         redirect('/rooms')
     }
-
-    return (
-        <div className="min-h-screen bg-pink-300 flex flex-col text-black items-center justify-center ">General Chat Room</div>
-    )
 }

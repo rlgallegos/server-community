@@ -19,10 +19,6 @@ export default async function Tips(){
         data = await fetchTipsAndStats(session.user.email)
     }
     if (data){
-        return (
-            <div className="min-h-screen flex flex-col bg-yellow-100 justify-center">
-                <TipsContainer tips={data.tips} statistics={data.statistics} />
-            </div>
-        )
+        return <TipsContainer tips={data.tips} statistics={data.statistics} />
     }
 }

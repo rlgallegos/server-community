@@ -31,7 +31,7 @@ body {
 
 .react-calendar {
     width: 350px;
-    background: white;
+    background: #F3EFE0;
     border: 1px solid #a0a096;
     font-family: Arial, Helvetica, sans-serif;
     line-height: 1.125em;
@@ -123,14 +123,14 @@ body {
   }
   .react-calendar__tile:enabled:hover,
   .react-calendar__tile:enabled:focus {
-    background-color: #e6e6e6;
+    background-color: white;
   }
   .react-calendar__tile--now {
-    background: #ffff76;
+    background: white;
   }
   .react-calendar__tile--now:enabled:hover,
   .react-calendar__tile--now:enabled:focus {
-    background: #ffffa9;
+    background: white;
   }
   .react-calendar__tile--hasActive {
     background: #76baff;

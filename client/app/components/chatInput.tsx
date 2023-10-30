@@ -36,6 +36,11 @@ export default function ChatInput({setMessages}: Props){
 
     async function handleSubmit(e: FormEvent){
         e.preventDefault()
+        if (!newMessage.text){
+            setError('Please Enter A Message')
+            return
+        }
+
         const regex: RegExp = /\/rooms\/(\d+)(?:\/([^/]+))?/
         const match: RegExpMatchArray | null = pathname.match(regex)
         
@@ -72,10 +77,10 @@ export default function ChatInput({setMessages}: Props){
     }
 
     return (
-        <div className="mx-auto h-1/4">
+        <div className="mx-auto h-1/3">
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <textarea className="p-3" name="" id="" cols={100} rows={4} value={newMessage.text} onChange={handleChange}></textarea>
-                <button className="border border-black w-48" type="submit">Post</button>
+                <button className="border border-black bg-accent w-48" type="submit">Post</button>
             </form>
             {error && <p>{error}</p>}
         </div>

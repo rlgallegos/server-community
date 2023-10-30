@@ -13,7 +13,7 @@ interface Props{
 
 export default function TipsContainer({tips, statistics}: Props){
     return (
-        <div className="flex flex-col">
+        <div className="min-h-screen bg-primary flex flex-col gap-2 justify-center">
             <CalendarContainer tips={tips} statistics={statistics} />
             <EditTipForm />
         </div>

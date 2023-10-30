@@ -46,14 +46,14 @@ export default function ChatDisplay({messages}: Props){
         if (session?.user?.name === message.user) {
             // users messages
             return (
-                <li key={uuidv4()} className="text-slate-700 text-left">
+                <li key={uuidv4()} className=" text-left">
                 [{message.timeStamp}] {message.user}: {message.text}
                 </li>
             );
             } else {
             // other messages
             return (
-                <li key={uuidv4()} className={`text-right ${message.user == highlightedUser ? 'text-blue-700'  : 'text-slate-700'}`}>
+                <li key={uuidv4()} className={`text-right ${message.user == highlightedUser ? 'text-green-900'  : ''}`}>
                 {message.text} :{message.user} [{message.timeStamp}]
                 </li>
             );
@@ -61,22 +61,20 @@ export default function ChatDisplay({messages}: Props){
       });
 
     return (
-        <div className="w-full flex flex-col items-center border-4 mx-auto text-center h-3/4">
-            <h1>Role Chat Display</h1>
-
-            <div className='w-full flex'>
-                <div className='w-3/4 p-4 border-2 border-black'>
+        <div className="w-full flex flex-col items-center mx-auto text-center h-2/3 border-2 border-accent">
+            <div className='w-full h-full flex'>
+                <div className='w-3/4 h-full p-8 flex flex-col-reverse overflow-y-scroll border-r-2 border-accent'>
                     <ul className=''>
                         {session?.user?.name && messageList}
                     </ul>
                 </div>
                 <div className='w-1/4 flex flex-col'>
 
-                    <div className='bg-slate-300 w-full h-full border-2 border-black'>
-                        {users && <ChatDisplayUsersPanel users={users} setHighlightedUser={setHighlightedUser} />}
+                    <div className=' w-full h-full'>
+                        {users && <ChatDisplayUsersPanel users={users} highlightedUser={highlightedUser} setHighlightedUser={setHighlightedUser} />}
                     </div>
 
-                    {!users && <button onClick={handleShowCoworkers} className='bg-white text-black'>Click Me</button>}
+                    {!users && <button onClick={handleShowCoworkers} className='bg-accent border border-black'>View Coworkers</button>}
                     {error && <p className='text-red-700'>{error}</p>}
                 </div>
             </div>

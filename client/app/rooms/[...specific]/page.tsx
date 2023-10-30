@@ -17,7 +17,7 @@ export default async function RoleChatRoom({params}: Props){
     })
     if (res.ok){
         const data = await res.json()
-        return <ChatContainer roomMessages={data} />
+        return <ChatContainer roomMessages={data} type='specific'/>
     } else {
         redirect('/rooms')
     }

@@ -45,7 +45,7 @@ export default function CalendarContainer({tips, statistics}: Props){
 
     return (
         <div className="flex flex-col justify-center w-[700px] mx-auto">
-            <div className="flex w-full bg-red-600">
+            <div className="flex w-full">
                 <Calendar
                 onClickDay={handleClickDay}
                 className='react-calendar mx-auto w-1/2'
@@ -54,7 +54,7 @@ export default function CalendarContainer({tips, statistics}: Props){
                 maxDate={today}
                 showNeighboringMonth={false}
                 />
-                <div className="w-1/2 bg-blue-500 text-center">
+                <div className="w-1/2 bg-secondary border border-accent text-center">
                     {date && <div className="flex bg-white justify-evenly gap-0 border border-black w-[350px] text-center cursor-pointer">
                         <button className={`w-full h-full hover:bg-yellow-300 ${dayNight == 'Day' && 'bg-yellow-300'}`} onClick={handleSetDayNight}>Day</button>
                         <button className={`w-full hover:bg-violet-300 ${dayNight == 'Night' && 'bg-violet-300'}`} onClick={handleSetDayNight}>Night</button>
