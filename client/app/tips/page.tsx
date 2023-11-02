@@ -19,6 +19,6 @@ export default async function Tips(){
         data = await fetchTipsAndStats(session.user.email)
     }
     if (data){
-        return <TipsContainer tips={data.tips} statistics={data.statistics} />
+        return <TipsContainer tipInfo={data.tips} statisticInfo={data.statistics} />
     }
 }

@@ -7,9 +7,10 @@ import { fetchEditTips } from "../services/fetches"
 interface Props {
     tip: Tip | undefined | null
     setTip: Dispatch<SetStateAction<Tip | null | undefined>>
+    onUpdateTips: (id: number, amt: number) => void
 }
 
-export default function EditTipForm({tip, setTip}: Props){
+export default function EditTipForm({tip, setTip, onUpdateTips}: Props){
     const [newTip, setNewTip] = useState<string>('')
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -20,6 +21,7 @@ export default function EditTipForm({tip, setTip}: Props){
         if (tip?.id){
             const updatedTip: Tip = await fetchEditTips(tip.id, newTip)
             setTip(updatedTip)
+            onUpdateTips(tip.id, updatedTip.tip_amount)
         }
     }
 
