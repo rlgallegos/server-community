@@ -308,13 +308,6 @@ def get_suggestion(email):
         return make_response({'response': response}, 200)
 
 
-
-
-
-
-
-
-
 # Next OAuth create / update database
 @app.route('/oauth/update', methods=['POST'])
 def update_database():
@@ -322,9 +315,6 @@ def update_database():
         data = request.get_json()
         res = update_database_with_oauth(data)
         return res
-
-
-
 
 
 

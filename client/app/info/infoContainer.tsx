@@ -22,7 +22,7 @@ export default function InfoContainer({email}: Props){
     }
 
     return (
-        <div className="min-h-screen bg-primary flex justify-evenly">
+        <div className="min-h-screen bg-primary flex justify-evenly py-6">
 
             {/* Explanation / Button */}
             <div className={`p-6 flex flex-col border border-black justify-evenly items-center transition-all ease-in-out duration-1000

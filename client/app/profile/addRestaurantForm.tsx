@@ -54,7 +54,7 @@ export default function AddRestaurantForm({restaurantData, userData, setUserData
     }
 
     return (
-        <div className="bg-secondary p-6">
+        <div className="bg-secondary border border-accent p-6">
             <form className='flex flex-col gap-4' onSubmit={handleLinkRestaurant}>
                 <div className='flex gap-4'>
                     <select value={selectedRestaurant} onChange={handleSelectRest}>

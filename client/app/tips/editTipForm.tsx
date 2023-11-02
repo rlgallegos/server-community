@@ -30,7 +30,7 @@ export default function EditTipForm({tip, setTip, onUpdateTips}: Props){
 
             <form onSubmit={handleSubmit} className="flex justify-evenly gap-6 py-4">
                 <input className="bg-accent px-2" type="number" value={newTip} onChange={handleChange} />
-                <button type="submit" className="bg-accent hover:bg-slate-100 px-4 py-2 border border-black"
+                <button type="submit" className="bg-accent px-4 py-2 border border-white"
                 >Edit Tip</button>
             </form>
 

@@ -16,7 +16,7 @@ export default function ChatContainer({roomMessages, type}: Props){
     const [messages, setMessages] = useState<Array<Message>>(roomMessages)
 
     return (
-        <div className="h-screen bg-primary flex flex-col ">
+        <div className="h-screen bg-primary py-6 flex flex-col ">
             <div className="h-1/6 flex flex-col items-center justify-center">
                 <h1 className="text-xl">{type == 'specific' ? 'Job-Specific Room' : 'General Restaurant Room'}</h1>
             </div>

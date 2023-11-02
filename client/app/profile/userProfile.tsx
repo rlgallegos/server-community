@@ -31,11 +31,11 @@ export default function UserProfile({user, restaurantData}: Props){
         }
     }
 
-    return <div className="min-h-screen bg-primary flex flex-colr">
+    return <div className="min-h-screen bg-primary py-6 flex">
         <div className='w-full mx-auto flex flex-col items-center justify-evenly'>
             <ClickableImage src={userData.image} alt='user' height={300} width={300} callback={handleUpdateImage} />
             {error && <p>{error}</p>}
-            <div className="flex flex-col gap-1">
+            <div className="w-1/2 bg-secondary border border-accent p-6 flex flex-col gap-1">
                 <h1>{userData.name}</h1>
                 <h3>Email: {userData.email}</h3>
                 <h3>Restaurant: {userData.restaurant ? userData.restaurant.name : 'None Selected'}</h3>

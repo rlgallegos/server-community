@@ -31,7 +31,7 @@ export default function TipsContainer({tipInfo, statisticInfo}: Props){
     }
 
     return (
-        <div className="min-h-screen bg-primary flex flex-col gap-2 justify-center">
+        <div className="min-h-screen bg-primary py-6 flex flex-col gap-2 justify-center">
             <CalendarContainer tips={tips} statistics={statistics} tip={tip} setTip={setTip} />
             <EditTipForm tip={tip} setTip={setTip} onUpdateTips={handleUpdateTips} />
         </div>
