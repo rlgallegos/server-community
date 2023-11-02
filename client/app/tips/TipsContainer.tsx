@@ -21,11 +21,11 @@ export default function TipsContainer({tipInfo, statisticInfo}: Props){
         console.log(id, newAmt)
         const updatedTips = tips.map(tip => {
             if (tip.id == id){
-                return tip.tip_amount = newAmt
-            } else {
-                return tip
+                tip.tip_amount = newAmt
             }
+            return tip
         })
+        console.log(updatedTips)
         setTips(updatedTips)
 
     }

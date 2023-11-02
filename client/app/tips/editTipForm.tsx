@@ -25,8 +25,6 @@ export default function EditTipForm({tip, setTip, onUpdateTips}: Props){
         }
     }
 
-    console.log(newTip)
-
     return (
         <div className="w-[700px] mx-auto border border-accent bg-secondary">
 
