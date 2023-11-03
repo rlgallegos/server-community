@@ -36,5 +36,18 @@ async function fetchEditTips(id: number, tip: string){
     }
 }
 
+async function fetchRSSFeeds(){
+    const res = await fetch(`${API_URL}/rss_feeds`)
+    if (res.ok){
+        const data = await res.json()
+        return data['data']
+    } else {
+        throw new Error('Failed to Fetch RSS Data')
+    }
+}
 
-export {fetchTipsAndStats, fetchEditTips}
+
+
+export {fetchTipsAndStats, fetchEditTips, fetchRSSFeeds}
+
+

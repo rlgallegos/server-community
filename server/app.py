@@ -7,6 +7,9 @@ from flask_restful import Api, Resource
 from sqlalchemy import and_
 from dotenv import load_dotenv
 
+import feedparser
+from bs4 import BeautifulSoup
+
 from models import User, Restaurant, Tip, TipStatistic
 from config import app, db, redis_client
 from database import update_database_with_oauth
@@ -317,7 +320,46 @@ def update_database():
         return res
 
 
+@app.route('/rss_feeds', methods=['GET'])
+def get_rss_feeds():
+    if request.method == 'GET':
+        eater_url = 'https://ny.eater.com/rss/index.xml'
 
+        feed = feedparser.parse(eater_url)
+
+        keywords = ["restaurant", "dining", "food", "cuisine", "new"]
+
+        filtered_entries = [entry for entry in feed.entries if any(keyword in entry.title.lower() for keyword in keywords)]
+
+
+        # Print the filtered entries
+        for entry in filtered_entries:
+            print("-------------------NEW ENTRY-------------------------")
+            print(entry)
+            # print(entry.title)
+            # print(entry.link)
+            # print(entry.published)
+            article_html = entry.get("content")[0].get("value")
+            soup = BeautifulSoup(article_html, 'html.parser')
+            
+
+            first_image = soup.find('figure').find('img')
+            if first_image:
+                entry['main_image_src'] = first_image['src']
+                entry['main_image_alt'] = first_image['alt']
+
+            # for paragraph in soup.find_all("p"):
+            #     if not paragraph.find("cite") and not paragraph.find("figcaption"):
+            #         text =  paragraph.get_text()
+            #         if text:
+
+            #             relevant_text.append(text)
+
+            # print(relevant_text)
+
+            print("\n")
+
+        return make_response({'data': filtered_entries}, 200)
 
 
 # Custom OAuth Route (Currently not in use)

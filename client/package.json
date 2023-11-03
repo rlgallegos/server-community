@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
+    "html-react-parser": "^5.0.5",
     "next": "latest",
     "next-auth": "^4.23.2",
     "react": "latest",
