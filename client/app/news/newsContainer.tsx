@@ -1,22 +1,25 @@
 'use client'
 
-import { EateryFeedItem } from "@/interfacesRSS"
+import { RSSFeedItem, RSSData } from "@/interfacesRSS"
 import Image from "next/image"
 import { useState } from "react"
 import ExpandedArticle from "./expandedArticle"
 import { v4 as uuidv4 } from 'uuid';
 
 interface Props{
-    rssData: EateryFeedItem[]
+    rssData: RSSData
 }
 
 export default function NewsContainer({rssData}: Props){
     const [article, setArticle] = useState<null | React.ReactNode>(null)
-    const handleClick = (entry: EateryFeedItem) => {
+    const handleClick = (entry: RSSFeedItem) => {
         setArticle(<ExpandedArticle entry={entry} />)
     }
 
-    const entryThumbnails = rssData.map(entry  => {
+    const eateryData: RSSFeedItem[] = rssData.eater_entries
+    const nyTimesData: RSSFeedItem[] = rssData.ny_entries
+
+    const eateryEntryThumbnails = eateryData.map(entry  => {
         return (
             <div key={uuidv4()} 
             className="bg-green-100 mx-1 flex flex-col py-6 w-screen aspect-square" 
@@ -37,7 +40,7 @@ export default function NewsContainer({rssData}: Props){
             <div className="flex flex-col overflow-y-scroll w-full">
                 {/* Carousel for articles */}
                 <div className="flex  w-full bg-red-100 overflow-x-scroll h-[400px]">
-                    {entryThumbnails}
+                    {eateryEntryThumbnails}
 
                 </div>
                 {/* Container for article */}

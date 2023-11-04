@@ -1,12 +1,12 @@
 'use client'
 import Image from "next/image"
-import { EateryFeedItem } from "@/interfacesRSS"
+import { RSSFeedItem } from "@/interfacesRSS"
 import { useEffect } from "react"
 import parse from 'html-react-parser'
 import { HTMLReactParserOptions, Element } from 'html-react-parser'
 
 interface Props {
-    entry: EateryFeedItem
+    entry: RSSFeedItem
 }
 
 export default function ExpandedArticle({entry}: Props){

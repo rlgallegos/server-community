@@ -1,13 +1,11 @@
 import { fetchRSSFeeds } from "../services/fetches"
 
 
-import { EateryFeedItem } from "@/interfacesRSS"
+import { RSSData } from "@/interfacesRSS"
 import NewsContainer from "./newsContainer"
 
-
-
 export default async function News(){
-    const rssData: EateryFeedItem[] = await fetchRSSFeeds()
+    const rssData: RSSData = await fetchRSSFeeds()
     
 
     return (

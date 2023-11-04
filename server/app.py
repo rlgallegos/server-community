@@ -330,9 +330,11 @@ def get_rss_feeds():
         ny_times_feed = feedparser.parse(ny_times_url)
 
 
-        # keywords = ["restaurant", "dining", "food", "cuisine", "new"]
+        ny_times_keywords = ["Chefs", "Restaurants"]
 
         # filtered_entries = [entry for entry in eater_feed.entries if any(keyword in entry.title.lower() for keyword in keywords)]
+
+        # ny_times_feed.entires = [entry for entry in ny_times_feed.entries if any(keyword in entry.title.lower() for keyword in keywords)]
 
         modified_eater_entries = []
         for entry in eater_feed.entries:
@@ -350,10 +352,33 @@ def get_rss_feeds():
         
         modified_ny_times_entries = []
         for entry in ny_times_feed.entries:
-            print(entry)
+            categories = [category['term'] for category in entry.get('tags', [])]
 
+            if any(keyword in categories for keyword in ny_times_keywords):
+                if 'media_content' in entry:
+                    first_image = entry.media_content[0]['url']
+                else:
+                    first_image = 'https://fakeimg.pl/500x500/?text=%3C:rooThink:596576798351949847%3E%20Sorry'
+                
+                print('--------NEW ENTRY--------')
+                print(entry.title)
+                print(entry.link)
+                print(first_image)
+                modified_entry = {
+                    "title": entry.title,
+                    "link": entry.link,
+                    "image_src": first_image,
+                    "image_alt": 'NY Times Article'
+                }
+                modified_ny_times_entries.append(modified_entry)
 
-        return make_response({'data': modified_eater_entries}, 200)
+        response = {
+            'ny_entries': modified_ny_times_entries,
+            'eater_entries': modified_eater_entries
+
+        }
+
+        return make_response({'data': response}, 200)
 
 
 # Custom OAuth Route (Currently not in use)
