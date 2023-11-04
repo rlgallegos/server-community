@@ -1,5 +1,5 @@
 import { fetchRSSFeeds } from "../services/fetches"
-import parse from 'html-react-parser'
+
 
 import { EateryFeedItem } from "@/interfacesRSS"
 import NewsContainer from "./newsContainer"

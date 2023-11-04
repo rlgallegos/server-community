@@ -324,42 +324,36 @@ def update_database():
 def get_rss_feeds():
     if request.method == 'GET':
         eater_url = 'https://ny.eater.com/rss/index.xml'
+        ny_times_url = 'https://rss.nytimes.com/services/xml/rss/nyt/DiningandWine.xml'
 
-        feed = feedparser.parse(eater_url)
-
-        keywords = ["restaurant", "dining", "food", "cuisine", "new"]
-
-        filtered_entries = [entry for entry in feed.entries if any(keyword in entry.title.lower() for keyword in keywords)]
+        eater_feed = feedparser.parse(eater_url)
+        ny_times_feed = feedparser.parse(ny_times_url)
 
 
-        # Print the filtered entries
-        for entry in filtered_entries:
-            print("-------------------NEW ENTRY-------------------------")
-            print(entry)
-            # print(entry.title)
-            # print(entry.link)
-            # print(entry.published)
+        # keywords = ["restaurant", "dining", "food", "cuisine", "new"]
+
+        # filtered_entries = [entry for entry in eater_feed.entries if any(keyword in entry.title.lower() for keyword in keywords)]
+
+        modified_eater_entries = []
+        for entry in eater_feed.entries:
             article_html = entry.get("content")[0].get("value")
             soup = BeautifulSoup(article_html, 'html.parser')
-            
 
             first_image = soup.find('figure').find('img')
-            if first_image:
-                entry['main_image_src'] = first_image['src']
-                entry['main_image_alt'] = first_image['alt']
+            modified_entry = {
+                "title" : entry.title,
+                "link" : entry.link,
+                "image_src" : first_image['src'] if first_image else None,
+                "image_alt" : first_image['alt'] if first_image else None,
+            }
+            modified_eater_entries.append(modified_entry)
+        
+        modified_ny_times_entries = []
+        for entry in ny_times_feed.entries:
+            print(entry)
 
-            # for paragraph in soup.find_all("p"):
-            #     if not paragraph.find("cite") and not paragraph.find("figcaption"):
-            #         text =  paragraph.get_text()
-            #         if text:
 
-            #             relevant_text.append(text)
-
-            # print(relevant_text)
-
-            print("\n")
-
-        return make_response({'data': filtered_entries}, 200)
+        return make_response({'data': modified_eater_entries}, 200)
 
 
 # Custom OAuth Route (Currently not in use)

@@ -37,7 +37,9 @@ async function fetchEditTips(id: number, tip: string){
 }
 
 async function fetchRSSFeeds(){
-    const res = await fetch(`${API_URL}/rss_feeds`)
+    const res = await fetch(`${API_URL}/rss_feeds`, {
+        cache: 'no-cache'
+    })
     if (res.ok){
         const data = await res.json()
         return data['data']
