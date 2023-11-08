@@ -1,9 +1,8 @@
 'use client'
 
 import { RSSFeedItem, RSSData } from "@/interfacesRSS"
-import Image from "next/image"
-import { useState } from "react"
-import ExpandedArticle from "./expandedArticle"
+
+import ImageThumbnail from "./imageThumbnail"
 import { v4 as uuidv4 } from 'uuid';
 
 interface Props{
@@ -11,44 +10,27 @@ interface Props{
 }
 
 export default function NewsContainer({rssData}: Props){
-    const [article, setArticle] = useState<null | React.ReactNode>(null)
-    const handleClick = (entry: RSSFeedItem) => {
-        setArticle(<ExpandedArticle entry={entry} />)
-    }
 
     const eateryData: RSSFeedItem[] = rssData.eater_entries
     const nyTimesData: RSSFeedItem[] = rssData.ny_entries
 
-    const eateryEntryThumbnails = eateryData.map(entry  => {
-        return (
-            <div key={uuidv4()} 
-            className="bg-green-100 mx-1 flex flex-col py-6 w-screen aspect-square" 
-            onClick={() => handleClick(entry)}>
-
-            <div className={`w-2/3 mx-auto aspect-square flex items-center`}>
-                <Image src={entry.image_src} alt={entry.image_alt} height={500} width={500} />
-            </div>
-                <h3>{entry.title}</h3>
-                <p>{entry.link}</p>
-            </div>
-        )
-    })
+    const eateryEntryThumbnails = eateryData.map(entry  => <ImageThumbnail key={uuidv4()} entry={entry} />)
+    const nyTimesEntryThumbnails = nyTimesData.map(entry => <ImageThumbnail key={uuidv4()} entry={entry} />)
 
     return (
-        <div className="h-screen bg-primary py-12 flex flex-col items-center justify-center">
+        <div className="h-screen bg-primary py-12 flex flex-col gap-4 justify-evenly">
             {/* Vertical Scrolling of Page */}
-            <div className="flex flex-col overflow-y-scroll w-full">
-                {/* Carousel for articles */}
-                <div className="flex  w-full bg-red-100 overflow-x-scroll h-[400px]">
+
+                <h1 className="text-3xl">Eatery:</h1>
+                <div className="flex  w-full bg-red-100 overflow-x-scroll h-[500px]">
                     {eateryEntryThumbnails}
-
                 </div>
-                {/* Container for article */}
-                <div>
-                    {article}
+                <h1 className="text-3xl">NY Times:</h1>
+                <div className="flex  w-full bg-red-100 overflow-x-scroll h-[500px]">
+                    {nyTimesEntryThumbnails}
                 </div>
 
-            </div>
+      
         </div>
     )
 }

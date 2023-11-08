@@ -4,7 +4,9 @@ const nextConfig = {
         domains: [
             "lh3.googleusercontent.com",
             "i.imgur.com",
-            "cdn.vox-cdn.com"
+            "cdn.vox-cdn.com",
+            "static01.nyt.com",
+            "fakeimg.pl"
         ]
     }
 }
