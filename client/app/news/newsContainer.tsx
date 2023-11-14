@@ -25,7 +25,7 @@ export default function NewsContainer({rssData}: Props){
                 <div className="flex  w-full bg-red-100 overflow-x-scroll h-[500px]">
                     {eateryEntryThumbnails}
                 </div>
-                <h1 className="text-3xl">NY Times</h1>
+                <h1 className="text-3xl">NY Times:</h1>
                 <div className="flex  w-full bg-red-100 overflow-x-scroll h-[500px]">
                     {nyTimesEntryThumbnails}
                 </div>
